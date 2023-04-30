@@ -317,3 +317,5 @@ Các bạn thêm đoạn code này vào `settings.json` của VS Code
 ### tsconfig.json
 
 https://www.typescriptlang.org/tsconfig#module
+
+setup-init-project
