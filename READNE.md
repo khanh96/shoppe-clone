@@ -319,3 +319,4 @@ Các bạn thêm đoạn code này vào `settings.json` của VS Code
 https://www.typescriptlang.org/tsconfig#module
 
 branch dev
+branch dev
