@@ -318,5 +318,156 @@ Các bạn thêm đoạn code này vào `settings.json` của VS Code
 
 https://www.typescriptlang.org/tsconfig#module
 
-branch dev
-branch dev
+### React Hook Form
+
+- noValidate: ngăn không cho validate default của html.
+
+```jsx
+  <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit} noValidate>
+```
+
+- sử dụng register để dki cho từng input
+
+```jsx
+<input
+  type='email'
+  className='w-full rounded-sm border border-gray-300 p-3 outline-none focus:border-gray-500 focus:shadow-sm'
+  placeholder='Email'
+  {...register('email', rules.email)}
+/>
+```
+
+- Muốn truyền tham số vào rules để custom rules thì phải truyền vào kiểu function (tham khảo file rules.ts)
+
+### Tailwindcss
+
+- Custom mô phỏng container Tailwindcss [https://tailwindcss.com/docs/plugins][https://github.com/tailwindlabs/tailwindcss/blob/master/stubs/config.full.js]
+
+```ts
+/* eslint-disable @typescript-eslint/no-var-requires */
+const plugin = require('tailwindcss/plugin')
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  corePlugins: {
+    container: false
+  },
+  theme: {
+    extend: {
+      colors: {
+        orange: '#ee4d2d'
+      }
+    }
+  },
+  plugins: [
+    plugin(function ({ addComponents, theme }) {
+      const components = {
+        '.container': {
+          maxWidth: theme('columns.7xl'), // max-w-7xl
+          marginLeft: 'auto', //mx-auto
+          marginRight: 'auto', //mx-auto
+          paddingLeft: theme('spacing.4') //px-4
+        }
+      }
+      addComponents(components)
+    })
+  ]
+}
+```
+
+- Sử dụng background custom thì thêm class với bg-[linear-gradient(-180deg,#f53d2d,#f63)]
+- Sử dụng web herroicons để lấy icon cho tailwindcss [https://heroicons.com/]
+- Muốn **truncation multiable line** thì cài thêm thư viện vào taiwindcss [https://tailwindcss.com/blog/multi-line-truncation-with-tailwindcss-line-clamp]
+
+#### TIP
+
+- xứ lý show nhiều error trong 1 form.
+
+```jsx
+const formError = error.response?.data.data
+  // cách show lỗi với nhiều trường trong 1 form
+if (formError) {
+  Object.keys(formError).forEach((key) => {
+    setError(key as keyof Omit<FormData, 'confirm_password'>, {
+      type: 'server',
+      message: formError[key as keyof Omit<FormData, 'confirm_password'>]
+    })
+  })
+}
+```
+
+- Thêm as const vào để objec này chỉ có thể đọc mà thôi.
+
+```js
+export const path = {
+  home: '/',
+  login: '/login',
+  register: '/register',
+  logout: '/logout',
+  profile: '/profile'
+} as const
+
+```
+
+- Format số theo currency và social number sử dụng **Intl** [https://www.freecodecamp.org/news/how-to-format-number-as-currency-in-javascript-one-line-of-code/]
+
+- Thuật toán render rating dựa vào index và rating
+  VD: rating= 3.4 ; index= 1->5
+  1 < 3.4 => 100%
+  2 < 3.4 => 100%
+  3 < 3.4 => 100%
+  4 < 3.4 => 4 - 3.4 < 1 => 40%
+  5 < 3.4 => 5 - 3.4 > 1 => 0%
+
+- Thuật toán pagination
+  Với rang=2 áp dụng cho khoảng cách đầu, cuối và xung quanh current_page
+
+[1] 2 3 ... 19 20
+1 [2] 3 4 ... 19 20
+1 2 [3] 4 5 ... 19 20
+1 2 3 [4] 5 6 ... 19 20
+1 2 3 4 [5] 6 7 ... 19 20
+1 2 ... 4 5 [6] 8 9 ... 19 20
+...
+1 2 ... 13 14 [15] 16 17 ... 19 20
+1 2 ... 14 15 [16] 17 18... 19 20
+1 2 ... 15 16 [17] 18 19 20
+1 2 ... 16 17 [18] 19 20
+1 2 ... 17 18 [19] 20
+1 2 ... 18 19 [20]
+
+- Sử dụng Link thay cho button trong 1 số trường hợp: như filter khi click vào.
+
+* Nó sẽ có link khi hover vào và có thể new tab
+
+- Sử dụng button trong những trường hợp submit or filter theo giá trị nào đó.
+
+### Floating-ui
+
+- Sử dụng floating UI để tính cách position [https://floating-ui.com/docs/getting-started]
+- dùng useFloating để hiển thị tooltip
+- FloatingArrow để hiển thị mũi tên
+- Đừng shift để khả năng hiển thị dịch chuyển phần tử nổi dọc theo các trục đã chỉ định để giữ cho phần tử đó ở chế độ xem.
+
+### framer motion
+
+- dùng framer motion để sử lý animation [https://www.framer.com/motion/]
+
+### React Router
+
+- Sử dụng **useRouterElement** thì các router object sẽ sắp xếp theo thứ tự từ trên xuống dưới. Nên hãy chú ý cách sắp xếp các thứ tự router object. Để xử lý vấn để này thì dùng index
+- Sử dụng **useMatch** để check router khớp với path
+- Sử dụng **useParams** để lấy params truyền qua các url
+- Sử dụng **useSearchParams** để sort và filter trên thanh url. Viết 1 hook useSearchParams để handle
+
+### http & Axios
+
+- Tạo biến và lưu accessToken từ localStorage để lúc lấy accessToken sẽ lấy từ RAM nhanh hơn là lấy từ bộ nhớ (localStorage)
+- Chỉ chạy 1 lần trong constructor()
+  ```jsx
+  this.accessToken = getAccessTokenFromLS()
+  ```
+
+### React Query
+
+- **keepPreviousData** Khi query data thì lúc dầud data sẽ undefined sau đó mới có data. Nên sẽ bị giật. Chúng ta thêm thuộc tính này vào để data không bị giật mỗi lần query api.
