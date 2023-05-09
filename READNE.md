@@ -471,3 +471,5 @@ export const path = {
 ### React Query
 
 - **keepPreviousData** Khi query data thì lúc dầud data sẽ undefined sau đó mới có data. Nên sẽ bị giật. Chúng ta thêm thuộc tính này vào để data không bị giật mỗi lần query api.
+
+test
