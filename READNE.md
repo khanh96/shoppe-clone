@@ -338,6 +338,14 @@ https://www.typescriptlang.org/tsconfig#module
 ```
 
 - Muốn truyền tham số vào rules để custom rules thì phải truyền vào kiểu function (tham khảo file rules.ts)
+- useForm():
+
+* trigger: khi mà muốn validate đầu vào 1 field phụ thuộc vào field khác.
+* shouldForcusError => default sẽ tự động focus nếu truyền ref vào input.
+
+`Chú ý:`
+
+> Cơ chế của tk react-hook-form là khi onChange input nào thì sẽ validate input đó thôi
 
 ### Tailwindcss
 
@@ -379,7 +387,7 @@ module.exports = {
 - Sử dụng web herroicons để lấy icon cho tailwindcss [https://heroicons.com/]
 - Muốn **truncation multiable line** thì cài thêm thư viện vào taiwindcss [https://tailwindcss.com/blog/multi-line-truncation-with-tailwindcss-line-clamp]
 
-#### TIP
+### TIP
 
 - xứ lý show nhiều error trong 1 form.
 
@@ -442,6 +450,46 @@ export const path = {
 
 - Sử dụng button trong những trường hợp submit or filter theo giá trị nào đó.
 
+- Sử dụng **tabIndex** để tăng khả năng thân thiện cho người dùng.
+- Sử dụng **role='button'** **aria-hidden='true'** với các div mà muốn click
+
+```tsx
+<div
+  className='flex items-center text-sm'
+  onClick={() => handleRatingStar(5 - index)}
+  tabIndex={0}
+  role='button'
+  aria-hidden='true'
+></div>
+```
+
+- Khác phục việc render dangerouslySetInnerHTML với thư viện **DOMPurify** để ngăn chặn việc tấn công XSS
+
+```tsx
+// bad
+<div
+  dangerouslySetInnerHTML={{
+    __html: product.description
+  }}
+></div>
+// good
+<div
+  dangerouslySetInnerHTML={{
+    __html: DOMPurify.sanitize(product.description)
+  }}
+></div>
+```
+
+- Kỹ thuật zoom ảnh [https://www.figma.com/file/ksSZMCzR1i1aTPUZp95xAs/Thu%E1%BA%ADt-to%C3%A1n-zoom?type=whiteboard]
+
+* Sự dụng thuộc tính css **pointer-events-none** để loại bỏ hiện ứng bubble event
+
+  **event.pageX** và **event.pageY**: Tọa độ con trỏ chuột
+  **rect.x** và **rect.y**: Tọa độ x,y của element theo window
+  **naturalHeight** và **naturalWidth**: là width và height default của ảnh.
+  **rect.height** và **rect.width** là width và height mà hiển thị trên web (chúng ta thấy)
+  **offsetX** và **offsetY** vị trí x,y con trỏ chuột trong element
+
 ### Floating-ui
 
 - Sử dụng floating UI để tính cách position [https://floating-ui.com/docs/getting-started]
@@ -449,7 +497,7 @@ export const path = {
 - FloatingArrow để hiển thị mũi tên
 - Đừng shift để khả năng hiển thị dịch chuyển phần tử nổi dọc theo các trục đã chỉ định để giữ cho phần tử đó ở chế độ xem.
 
-### framer motion
+### Framer motion
 
 - dùng framer motion để sử lý animation [https://www.framer.com/motion/]
 
@@ -472,4 +520,12 @@ export const path = {
 
 - **keepPreviousData** Khi query data thì lúc dầud data sẽ undefined sau đó mới có data. Nên sẽ bị giật. Chúng ta thêm thuộc tính này vào để data không bị giật mỗi lần query api.
 
-test
+### TYPESCRIPT
+
+// `-?` cú pháp loại bỏ undefined khỏi key optional
+
+```ts
+export type NoUndefinedField<T> = {
+  [P in keyof T]-?: NoUndefinedField<NonNullable<T[P]>>
+}
+```

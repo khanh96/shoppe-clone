@@ -18,15 +18,15 @@ export default function Input({
   rules,
   type,
   errorMessage,
-  placeholder,
   inputClassName = 'w-full rounded-sm border border-gray-300 p-3 outline-none focus:border-gray-500 focus:shadow-sm',
-  errorClassName = 'mt-1 min-h-[1.25rem] text-left text-sm text-red-600'
+  errorClassName = 'mt-1 min-h-[1.25rem] text-left text-sm text-red-600',
+  ...rest
 }: InputTypeProps) {
   const registerResult = register && name ? { ...register(name, rules) } : {}
 
   return (
     <div className={wrapClassName}>
-      <input type={type} className={inputClassName} placeholder={placeholder} {...registerResult} />
+      <input type={type} className={inputClassName} {...registerResult} {...rest} />
       {/* Để  min-h-[1rem] để khi xuất hiện lỗi sẽ không bị xô lệnh input */}
       <div className={errorClassName}>{errorMessage}</div>
     </div>

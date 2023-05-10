@@ -27,3 +27,7 @@ export function formatCurrency(currency: number) {
 export function formatNumberToSocialStyle(value: number) {
   return new Intl.NumberFormat('en', { notation: 'compact', minimumFractionDigits: 1 }).format(value)
 }
+
+export function rateSale(original: number, sale: number) {
+  return Math.round(((original - sale) / original) * 100) + '%'
+}

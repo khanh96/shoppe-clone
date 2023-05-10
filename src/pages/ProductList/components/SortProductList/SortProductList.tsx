@@ -1,9 +1,10 @@
 import { sortBy, order as orderConst } from 'src/constants/product'
-import { QueryConfig } from '../ProductList'
+import { QueryConfig } from '../../ProductList'
 import classNames from 'classnames'
 import { ProductListConfig } from 'src/types/product.type'
 import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import { omit } from 'lodash'
+import { path } from 'src/constants/path'
 
 interface SortProductListProp {
   queryConfig: QueryConfig
@@ -33,7 +34,6 @@ export default function SortProductList({ queryConfig, pageSize }: SortProductLi
     })
   }
   const handlePriceOrder = (priceOrderValue: Exclude<ProductListConfig['order'], undefined>) => {
-    console.log(priceOrderValue)
     navigate({
       search: createSearchParams({
         ...queryConfig,
@@ -43,13 +43,11 @@ export default function SortProductList({ queryConfig, pageSize }: SortProductLi
     })
   }
   const handleSearchParams = (pageNumber: number) => {
-    console.log(pageNumber)
     return createSearchParams({
       ...queryConfig,
       page: pageNumber.toString()
     })
   }
-  console.log('order', order)
   return (
     <div className='bg-gray-300/40 px-3 py-4'>
       <div className='flex flex-wrap items-center justify-between gap-2'>
@@ -123,6 +121,7 @@ export default function SortProductList({ queryConfig, pageSize }: SortProductLi
             ) : (
               <Link
                 to={{
+                  pathname: path.home,
                   search: handleSearchParams(page - 1).toString()
                 }}
                 className='flex h-8 items-center rounded-tl-sm bg-white/60 px-3 shadow hover:bg-slate-100'
@@ -155,6 +154,7 @@ export default function SortProductList({ queryConfig, pageSize }: SortProductLi
             ) : (
               <Link
                 to={{
+                  pathname: path.home,
                   search: handleSearchParams(page + 1).toString()
                 }}
                 className='flex h-8 items-center rounded-tr-sm bg-white/60 px-3 shadow hover:bg-slate-100'

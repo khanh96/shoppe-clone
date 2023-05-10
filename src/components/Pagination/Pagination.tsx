@@ -103,6 +103,7 @@ export default function Pagination({ queryConfig, pageSize }: PaginationProp) {
       ) : (
         <Link
           to={{
+            pathname: path.home,
             search: handleSearchParams(page - 1).toString()
           }}
           className='mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm'
@@ -116,6 +117,7 @@ export default function Pagination({ queryConfig, pageSize }: PaginationProp) {
       ) : (
         <Link
           to={{
+            pathname: path.home,
             search: handleSearchParams(page + 1).toString()
           }}
           className='mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm'

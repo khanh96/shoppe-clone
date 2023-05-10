@@ -1,4 +1,5 @@
 import type { RegisterOptions, UseFormGetValues } from 'react-hook-form'
+import { text } from 'stream/consumers'
 import * as yup from 'yup'
 
 type Rules = {
@@ -63,9 +64,17 @@ export const getRules = (getValues?: UseFormGetValues<any>): Rules => ({
   }
 })
 
+function testPriceMinMax(this: yup.TestContext<yup.AnyObject>) {
+  const { price_max, price_min } = this.parent as { price_min: string; price_max: string }
+  if (price_min !== '' && price_max !== '') {
+    return Number(price_max) >= Number(price_min)
+  }
+  return price_max !== '' || price_min !== ''
+}
+
 // Sử dụng schema để validate
 
-export const registerSchema = yup.object({
+export const schema = yup.object({
   email: yup
     .string()
     .required('Trường Email phải bắt buộc')
@@ -82,14 +91,28 @@ export const registerSchema = yup.object({
     .required('Trường Confirm Password phải bắt buộc')
     .min(6, 'Độ dài email từ 6 - 160 ký tự')
     .max(160, 'Độ dài email từ 6 - 160 ký tự')
-    .oneOf([yup.ref('password')], 'Nhập lại Confirm Password không khớp')
+    .oneOf([yup.ref('password')], 'Nhập lại Confirm Password không khớp'),
+  price_min: yup.string().test({
+    name: 'price-not-allowed',
+    message: 'Vui lòng điền khoảng giá phù hợp',
+    test: testPriceMinMax
+  }),
+  price_max: yup.string().test({
+    name: 'price-not-allowed',
+    message: 'Vui lòng điền khoảng giá phù hợp',
+    test: testPriceMinMax
+  })
 })
 // export type dùng schema
+export const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
 export type RegisterSchemaType = yup.InferType<typeof registerSchema>
 
 // kế thừa type của registerSchema dùng omit
-export const loginSchema = registerSchema.omit(['confirm_password'])
+export const loginSchema = schema.pick(['email', 'password'])
 export type LoginSchemaType = yup.InferType<typeof loginSchema>
+
+export const priceRangeSchema = schema.pick(['price_min', 'price_max'])
+export type PriceRangeSchemaType = yup.InferType<typeof priceRangeSchema>
 
 // kế thừa type của registerSchema dùng pick
 //export const emailASchema = registerSchema.pick(['email','password'])

@@ -15,6 +15,7 @@ export interface Product {
   image: string
   createdAt: string
   updatedAt: string
+  description: string
 }
 
 export interface ProductList {
@@ -36,4 +37,5 @@ export interface ProductListConfig {
   price_min?: number
   price_max?: number
   max?: string
+  category?: string
 }
