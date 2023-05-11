@@ -68,7 +68,7 @@ export default function useRouterElement() {
       )
     },
     {
-      path: `${path.home}:id`,
+      path: `${path.productDetail}`,
       index: true,
       element: (
         <MainLayout>

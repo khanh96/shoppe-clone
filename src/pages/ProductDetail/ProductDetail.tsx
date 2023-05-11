@@ -3,21 +3,38 @@ import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { productApi } from 'src/apis/product.api'
-import InputNumber from 'src/components/InputNumber'
 import ProductRating from 'src/components/ProductRating'
-import { Product } from 'src/types/product.type'
-import { formatCurrency, formatNumberToSocialStyle, rateSale } from 'src/utils/utils'
+import { Product as ProductType, ProductListConfig } from 'src/types/product.type'
+import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
+import Product from '../ProductList/components/Product'
+import { initialQueryConfig } from 'src/hooks/useQueryConfig'
+import QuantityController from 'src/components/QuantityController'
 
 export default function ProductDetail() {
-  const { id } = useParams()
-  const { data: productDetailData } = useQuery({
-    queryKey: ['product'],
-    queryFn: () => productApi.getProduct(id as string)
-  })
+  const [buyCount, setBuyCount] = useState<number>(1)
+  const { nameId } = useParams()
+  const idProduct = getIdFromNameId(nameId as string)
   const imageRef = useRef<HTMLImageElement>(null)
   const [activeImage, setActiveImage] = useState<string>('')
   const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
+  const { data: productDetailData } = useQuery({
+    queryKey: ['product'],
+    queryFn: () => productApi.getProduct(idProduct as string)
+  })
   const product = productDetailData?.data.data
+  const queryConfig: ProductListConfig = {
+    page: initialQueryConfig.page,
+    limit: initialQueryConfig.limit,
+    category: product?.category._id
+  }
+  const { data: productRelatedData } = useQuery({
+    queryKey: ['products', queryConfig],
+    queryFn: () => productApi.getProducts(queryConfig),
+    enabled: Boolean(product), // khi product có data thì mới gọi
+    staleTime: 3 * 60 * 1000
+  })
+  const productRelated = productRelatedData?.data.data
+
   const currentImages = useMemo(() => {
     return product ? product.images.slice(...currentIndexImages) : []
   }, [product, currentIndexImages])
@@ -28,12 +45,16 @@ export default function ProductDetail() {
     }
   }, [product])
 
+  useEffect(() => {
+    setBuyCount(1)
+  }, [])
+
   const handleHoverActiveImage = (imageActive: string) => {
     setActiveImage(imageActive)
   }
 
   const nextImage = () => {
-    if (currentIndexImages[1] < (product as Product).images.length) {
+    if (currentIndexImages[1] < (product as ProductType).images.length) {
       setCurrentIndexImages((prev) => {
         return [prev[0] + 1, prev[1] + 1]
       })
@@ -48,12 +69,12 @@ export default function ProductDetail() {
     }
   }
   /**
-     * event.pageX và event.pageY: Tọa độ con trỏ chuột
-     * rect.x và rect.y: Tọa độ x,y của element theo window
-     * naturalHeight và naturalWidth: là width và height default của ảnh.
-     * rect.height và rect.width là width và height mà hiển thị trên web (chúng ta thấy)
-     * offsetX và offsetY vị trí x,y con trỏ chuột trong element
-     */
+   * event.pageX và event.pageY: Tọa độ con trỏ chuột
+   * rect.x và rect.y: Tọa độ x,y của element theo window
+   * naturalHeight và naturalWidth: là width và height default của ảnh.
+   * rect.height và rect.width là width và height mà hiển thị trên web (chúng ta thấy)
+   * offsetX và offsetY vị trí x,y con trỏ chuột trong element
+   */
   const handleZoomImage = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = event.currentTarget.getBoundingClientRect()
     const image = imageRef.current as HTMLImageElement
@@ -66,8 +87,8 @@ export default function ProductDetail() {
     const offsetY = event.pageY - (rect.y + window.scrollY)
     const top = offsetY * (1 - naturalHeight / rect.height)
     const left = offsetX * (1 - naturalWidth / rect.width)
-    image.style.width = 500 + 'px'
-    image.style.height = 500 + 'px'
+    image.style.width = naturalWidth + 'px'
+    image.style.height = naturalHeight + 'px'
     image.style.maxWidth = 'unset'
     image.style.top = top + 'px'
     image.style.left = left + 'px'
@@ -75,6 +96,10 @@ export default function ProductDetail() {
   const handleResetZoomImage = () => {
     // Xóa Attribute khỏi DOM
     imageRef.current?.removeAttribute('style')
+  }
+
+  const handleBuyCount = (value: number) => {
+    setBuyCount(value)
   }
 
   if (!product) return null
@@ -170,37 +195,13 @@ export default function ProductDetail() {
               </div>
               <div className='mt-8 flex items-center'>
                 <div className='capitalize text-gray-500'>Số lượng</div>
-                <div className='ml-10 flex items-center'>
-                  <button className='flex h-8 w-8 items-center justify-center rounded-l-sm border border-gray-300 text-gray-600'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      strokeWidth={1.5}
-                      stroke='currentColor'
-                      className='h-4 w-4'
-                    >
-                      <path strokeLinecap='round' strokeLinejoin='round' d='M18 12H6' />
-                    </svg>
-                  </button>
-                  <InputNumber
-                    errorClassName='hidden'
-                    value={1}
-                    inputClassName='h-8 w-14 border-t border-b border-gray-300 p-1 text-center outline-none'
-                  />
-                  <button className='flex h-8 w-8 items-center justify-center rounded-r-sm border border-gray-300 text-gray-600'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      fill='none'
-                      viewBox='0 0 24 24'
-                      strokeWidth={1.5}
-                      stroke='currentColor'
-                      className='h-4 w-4'
-                    >
-                      <path strokeLinecap='round' strokeLinejoin='round' d='M12 6v12m6-6H6' />
-                    </svg>
-                  </button>
-                </div>
+                <QuantityController
+                  onDecrease={handleBuyCount}
+                  onIncrease={handleBuyCount}
+                  onType={handleBuyCount}
+                  value={buyCount}
+                  max={product.quantity}
+                />
                 <div className='ml-6 text-sm text-gray-500'>{product.quantity} sản phẩm có sắn</div>
               </div>
               <div className='mt-8 flex items-center'>
@@ -238,15 +239,25 @@ export default function ProductDetail() {
           </div>
         </div>
         <div className='mt-8 bg-white p-4 shadow'>
-          <div className='container'>
-            <div className='rounded bg-gray-50 p-4 text-lg capitalize text-slate-700'>Mô tả sản phẩm</div>
-            <div className='mx-4 mb-4 mt-12 text-sm leading-loose'>
-              <div
-                dangerouslySetInnerHTML={{
-                  __html: DOMPurify.sanitize(product.description)
-                }}
-              ></div>
-            </div>
+          <div className='rounded bg-gray-50 p-4 text-lg capitalize text-slate-700'>Mô tả sản phẩm</div>
+          <div className='mx-4 mb-4 mt-12 text-sm leading-loose'>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: DOMPurify.sanitize(product.description)
+              }}
+            ></div>
+          </div>
+        </div>
+        <div className='mt-8'>
+          <div className='uppercase text-gray-400'></div>
+          <div className='mt-6 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6'>
+            {productRelated?.products.map((product) => {
+              return (
+                <div className='col-span-1' key={product._id}>
+                  <Product product={product} />
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>

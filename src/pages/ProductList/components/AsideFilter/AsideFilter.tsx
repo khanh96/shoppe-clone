@@ -4,7 +4,6 @@ import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import { path } from 'src/constants/path'
 import { Category } from 'src/types/category.type'
-import { QueryConfig } from '../../ProductList'
 import classNames from 'classnames'
 import InputNumber from 'src/components/InputNumber'
 import { useForm, Controller } from 'react-hook-form'
@@ -13,6 +12,7 @@ import { omit } from 'lodash'
 import { PriceRangeSchemaType, priceRangeSchema } from 'src/utils/rules'
 import { NoUndefinedField } from 'src/types/utils.type'
 import RatingStars from '../RatingStars'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 interface AsideFilterProps {
   categories: Category[]
@@ -39,11 +39,8 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
   })
   const navigate = useNavigate()
   const formData = watch()
-  console.log('formData', formData)
-  console.log(queryConfig)
 
   const onSubmit = handleSubmit((data) => {
-    console.log('data', data)
     navigate({
       pathname: path.home,
       search: createSearchParams({ ...queryConfig, price_min: data.price_min, price_max: data.price_max }).toString()
@@ -68,7 +65,9 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
   return (
     <div className='py-4'>
       <Link
-        to={path.home}
+        to={{
+          pathname: path.home
+        }}
         className={classNames('flex items-center font-bold', {
           'text-orange': !queryConfig.category
         })}
@@ -146,14 +145,14 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
                 <InputNumber
                   type='text'
                   placeholder='đ TỪ'
-                  inputClassName='w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
+                  classNameInput='w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
                   onChange={(event) => {
                     field.onChange(event)
                     trigger('price_max')
                   }}
                   value={field.value}
                   ref={field.ref}
-                  errorClassName='hidden'
+                  classNameError='hidden'
                 />
               )}
             />
@@ -165,14 +164,14 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
                 <InputNumber
                   type='text'
                   placeholder='đ Đến'
-                  inputClassName='w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
+                  classNameInput='w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
                   onChange={(event) => {
                     field.onChange(event)
                     trigger('price_min')
                   }}
                   value={field.value}
                   ref={field.ref}
-                  errorClassName='hidden'
+                  classNameError='hidden'
                 />
               )}
             />

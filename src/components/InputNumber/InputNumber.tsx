@@ -1,20 +1,20 @@
 import React, { forwardRef } from 'react'
 
-interface InputNumberTypeProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  wrapClassName?: string
-  inputClassName?: string
-  errorClassName?: string
+export interface InputNumberProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  classNameWrap?: string
+  classNameInput?: string
+  classNameError?: string
   errorMessage?: string
 }
 
-const InputNumber = forwardRef<HTMLInputElement, InputNumberTypeProps>(function InputNumberInner(props, ref) {
+const InputNumber = forwardRef<HTMLInputElement, InputNumberProps>(function InputNumberInner(props, ref) {
   const {
-    wrapClassName,
-    inputClassName,
+    classNameWrap,
+    classNameInput,
     type,
     name,
     onChange,
-    errorClassName = 'mt-1 text-red-600 min-h-[1.25rem] text-sm',
+    classNameError = 'mt-1 text-red-600 min-h-[1.25rem] text-sm',
     errorMessage,
     ...rest
   } = props
@@ -25,9 +25,9 @@ const InputNumber = forwardRef<HTMLInputElement, InputNumberTypeProps>(function 
     }
   }
   return (
-    <div className={wrapClassName}>
-      <input name={name} type={type} className={inputClassName} onChange={handleChange} ref={ref} {...rest} />
-      <div className={errorClassName}>{errorMessage}</div>
+    <div className={classNameWrap}>
+      <input name={name} type={type} className={classNameInput} onChange={handleChange} ref={ref} {...rest} />
+      <div className={classNameError}>{errorMessage}</div>
     </div>
   )
 })

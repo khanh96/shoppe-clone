@@ -1,41 +1,21 @@
 import AsideFilter from './components/AsideFilter'
 import SortProductList from './components/SortProductList'
 import Product from './components/Product/Product'
-import useQueryParams from 'src/hooks/useQueryParams'
 import { useQuery } from '@tanstack/react-query'
 import { productApi } from 'src/apis/product.api'
 import Pagination from 'src/components/Pagination'
 import { ProductListConfig } from 'src/types/product.type'
-import { omitBy, isUndefined, isEmpty } from 'lodash'
 import { getCategories } from 'src/apis/category.api'
-
-export type QueryConfig = {
-  [key in keyof ProductListConfig]: string
-}
+import useQueryConfig from 'src/hooks/useQueryConfig'
 
 export default function ProductList() {
-  const queryParams: QueryConfig = useQueryParams()
-  // Lọc ra những params query để request lên api. lấy params query từ url xuống sẽ là kiểu string
-  const queryConfig: QueryConfig = omitBy(
-    {
-      page: queryParams.page || '1',
-      exclude: queryParams.exclude,
-      limit: queryParams.limit || 5,
-      max: queryParams.max,
-      order: queryParams.order,
-      price_max: queryParams.price_max,
-      price_min: queryParams.price_min,
-      rating_filter: queryParams.rating_filter,
-      sort_by: queryParams.sort_by,
-      category: queryParams.category
-    },
-    isUndefined
-  )
+  const queryConfig = useQueryConfig()
 
   const { data: productsData } = useQuery({
     queryKey: ['products', queryConfig],
     queryFn: () => productApi.getProducts(queryConfig as ProductListConfig),
-    keepPreviousData: true // giữ cho ui k bị giật khi query api
+    keepPreviousData: true, // giữ cho ui k bị giật khi query api
+    staleTime: 3 * 60 * 1000
   })
   const { data: categoriesData } = useQuery({
     queryKey: ['categories'],

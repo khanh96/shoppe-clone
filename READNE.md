@@ -301,17 +301,6 @@ export const removeSpecialCharacter = (str: string) =>
   str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, '')
 ```
 
-Sữa lỗi Tailwindcss Extension không gợi ý class
-
-Các bạn thêm đoạn code này vào `settings.json` của VS Code
-
-```json
-{
-  //...
-  "tailwindCSS.experimental.classRegex": ["[a-zA-Z]*class[a-zA-Z]*='([^']+)'"]
-}
-```
-
 ### Chú ý:
 
 ### tsconfig.json
@@ -388,6 +377,17 @@ module.exports = {
 - Muốn **truncation multiable line** thì cài thêm thư viện vào taiwindcss [https://tailwindcss.com/blog/multi-line-truncation-with-tailwindcss-line-clamp]
 
 ### TIP
+
+Sữa lỗi Tailwindcss Extension không gợi ý class
+
+Các bạn thêm đoạn code này vào `settings.json` của VS Code
+
+```json
+{
+  //...
+  "tailwindCSS.experimental.classRegex": ["[a-zA-Z]*class[a-zA-Z]*='([^']+)'"]
+}
+```
 
 - xứ lý show nhiều error trong 1 form.
 
@@ -518,7 +518,17 @@ export const path = {
 
 ### React Query
 
-- **keepPreviousData** Khi query data thì lúc dầud data sẽ undefined sau đó mới có data. Nên sẽ bị giật. Chúng ta thêm thuộc tính này vào để data không bị giật mỗi lần query api.
+- **keepPreviousData** của **useQuery** Khi query data thì lúc dầud data sẽ undefined sau đó mới có data. Nên sẽ bị giật. Chúng ta thêm thuộc tính này vào để data không bị giật mỗi lần query api.
+
+- **enabled** của **useQuery** // khi enabled = true thì mới gọi data, còn enabled = false thì không gọi
+
+```tsx
+const { data: productRelated } = useQuery({
+  queryKey: ['products', queryConfig],
+  queryFn: () => productApi.getProducts(queryConfig),
+  enabled: Boolean(product) // khi product có data thì mới gọi
+})
+```
 
 ### TYPESCRIPT
 
@@ -529,3 +539,8 @@ export type NoUndefinedField<T> = {
   [P in keyof T]-?: NoUndefinedField<NonNullable<T[P]>>
 }
 ```
+
+### SEO
+
+- URL thân thiện có thêm tên sản phẩm trên thanh URL
+  > vd [https://shopee.vn/%C3%81o-s%C6%A1-mi-nam-tay-ng%E1%BA%AFn-v%E1%BA%A3i-l%E1%BB%A5a-th%C3%A1i-cao-c%E1%BA%A5p-in-h%E1%BB%8Da-ti%E1%BA%BFt-BBR-m%E1%BA%ABu-m%E1%BB%9Bi-gi%C3%A1-r%E1%BA%BB-i.682198966.16824230912?sp_atk=22efaf8b-08ed-42d7-a442-4923bc30629a&xptdk=22efaf8b-08ed-42d7-a442-4923bc30629a]

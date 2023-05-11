@@ -2,9 +2,9 @@ import React from 'react'
 import type { RegisterOptions, UseFormRegister } from 'react-hook-form'
 
 interface InputTypeProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  wrapClassName?: string
-  inputClassName?: string
-  errorClassName?: string
+  classNameWrap?: string
+  classNameInput?: string
+  classNameError?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: UseFormRegister<any>
   rules?: RegisterOptions
@@ -12,23 +12,23 @@ interface InputTypeProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 export default function Input({
-  wrapClassName,
+  classNameWrap,
   register,
   name,
   rules,
   type,
   errorMessage,
-  inputClassName = 'w-full rounded-sm border border-gray-300 p-3 outline-none focus:border-gray-500 focus:shadow-sm',
-  errorClassName = 'mt-1 min-h-[1.25rem] text-left text-sm text-red-600',
+  classNameInput = 'w-full rounded-sm border border-gray-300 p-3 outline-none focus:border-gray-500 focus:shadow-sm',
+  classNameError = 'mt-1 min-h-[1.25rem] text-left text-sm text-red-600',
   ...rest
 }: InputTypeProps) {
   const registerResult = register && name ? { ...register(name, rules) } : {}
 
   return (
-    <div className={wrapClassName}>
-      <input type={type} className={inputClassName} {...registerResult} {...rest} />
+    <div className={classNameWrap}>
+      <input type={type} className={classNameInput} {...registerResult} {...rest} />
       {/* Để  min-h-[1rem] để khi xuất hiện lỗi sẽ không bị xô lệnh input */}
-      <div className={errorClassName}>{errorMessage}</div>
+      <div className={classNameError}>{errorMessage}</div>
     </div>
   )
 }

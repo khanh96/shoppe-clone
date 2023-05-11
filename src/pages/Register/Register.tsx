@@ -68,7 +68,7 @@ export default function Register() {
             <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit} noValidate>
               <div className='text-left text-2xl'>Đăng ký</div>
               <Input
-                wrapClassName='mt-8'
+                classNameWrap='mt-8'
                 type='email'
                 placeholder='Email'
                 register={register}
@@ -77,7 +77,7 @@ export default function Register() {
                 errorMessage={errors.email?.message}
               />
               <Input
-                wrapClassName='mt-3'
+                classNameWrap='mt-3'
                 type='password'
                 placeholder='Password'
                 register={register}
@@ -86,7 +86,7 @@ export default function Register() {
                 errorMessage={errors.password?.message}
               />
               <Input
-                wrapClassName='mt-3'
+                classNameWrap='mt-3'
                 type='password'
                 placeholder='Confirm password'
                 register={register}

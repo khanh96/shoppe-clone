@@ -65,7 +65,7 @@ export default function Login() {
             <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit}>
               <div className='text-left text-2xl'>Đăng nhập</div>
               <Input
-                wrapClassName='mt-8'
+                classNameWrap='mt-8'
                 type='email'
                 placeholder='Email'
                 register={register}
@@ -74,7 +74,7 @@ export default function Login() {
                 errorMessage={errors.email?.message}
               />
               <Input
-                wrapClassName='mt-3'
+                classNameWrap='mt-3'
                 type='password'
                 placeholder='Password'
                 register={register}
