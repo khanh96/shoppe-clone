@@ -326,6 +326,8 @@ https://www.typescriptlang.org/tsconfig#module
 />
 ```
 
+- Sử dụng **useController** của react hook form thì sẽ k sử dụng được input bin
+
 - Muốn truyền tham số vào rules để custom rules thì phải truyền vào kiểu function (tham khảo file rules.ts)
 - useForm():
 
@@ -508,6 +510,8 @@ export const path = {
 - Sử dụng **useParams** để lấy params truyền qua các url
 - Sử dụng **useSearchParams** để sort và filter trên thanh url. Viết 1 hook useSearchParams để handle
 
+- Khi 2 page qua navitage qua lại mà cùng 1 layout thì layout đó chỉ bị re-render lại chứ k bị unmout rồi render lại
+
 ### http & Axios
 
 - Tạo biến và lưu accessToken từ localStorage để lúc lấy accessToken sẽ lấy từ RAM nhanh hơn là lấy từ bộ nhớ (localStorage)
@@ -530,13 +534,44 @@ const { data: productRelated } = useQuery({
 })
 ```
 
-### TYPESCRIPT
+### TYPESCRIPT TIP
 
 // `-?` cú pháp loại bỏ undefined khỏi key optional
 
 ```ts
 export type NoUndefinedField<T> = {
   [P in keyof T]-?: NoUndefinedField<NonNullable<T[P]>>
+}
+```
+
+- Tạo một kiểu dữ liệu trả về từ propsA **person={{ getName: handleName }}** và dữ liệu trả về đó sẽ được gợi ý cho propB **lastName='lucian'** (Tạo một type và tự gợi ý trả về 1 type khác)
+
+```tsx
+type Gen<TFunc> = {
+  getName: TFunc
+}
+/**
+ *
+ * TFunc là khai báo 1 biến kiểu typescript được kế thừa là một callback return về string
+ * TLastName với cú phát ReturnType<TFunc>> sẽ là lấy kiểu dữ liệu trả về của 1 kiểu dữ liệu là Tfunc
+ */
+function LearnGenTypePro<TFunc extends () => string, TLastName extends ReturnType<TFunc>>(props: {
+  person: Gen<TFunc>
+  lastName: TLastName
+}) {
+  const { person, lastName } = props
+  console.log(person.getName())
+  console.log(lastName)
+  return null
+}
+// function handleName định nghĩa kiểu trả về là chuỗi "lucian"
+function handleName(): 'lucian' {
+  return 'lucian'
+}
+
+// props person định nghĩa kiểu trả về và lastname được gợi ý kiểu trả về đó về mặt typescript
+function AppTest() {
+  return <LearnGenTypePro person={{ getName: handleName }} lastName='lucian' />
 }
 ```
 

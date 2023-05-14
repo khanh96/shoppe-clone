@@ -13,6 +13,7 @@ import { PriceRangeSchemaType, priceRangeSchema } from 'src/utils/rules'
 import { NoUndefinedField } from 'src/types/utils.type'
 import RatingStars from '../RatingStars'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
+import InputV2 from 'src/components/InputV2'
 
 interface AsideFilterProps {
   categories: Category[]
@@ -134,11 +135,12 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
         Bộ lọc tìm kiếm
       </Link>
       <div className='my-4 h-[1px] bg-gray-300'></div>
+
       <div className='my-5'>
         <div>Khoảng giá</div>
         <form className='mt-2' onSubmit={onSubmit}>
           <div className='flex items-start'>
-            <Controller
+            {/* <Controller
               control={control}
               name='price_min'
               render={({ field }) => (
@@ -155,6 +157,17 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
                   classNameError='hidden'
                 />
               )}
+            /> */}
+            <InputV2
+              control={control}
+              name='price_min'
+              type='number'
+              placeholder='đ TỪ'
+              classNameInput='w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
+              classNameError='hidden'
+              onChange={() => {
+                trigger('price_max')
+              }}
             />
             <div className='mx-2 mt-2 shrink-0 '>-</div>
             <Controller

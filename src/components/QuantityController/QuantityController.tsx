@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import InputNumber, { InputNumberProps } from '../InputNumber'
 
 interface QuantityControllerProps extends InputNumberProps {
@@ -11,6 +11,7 @@ interface QuantityControllerProps extends InputNumberProps {
 
 export default function QuantityController(props: QuantityControllerProps) {
   const { classNameWrapper = 'ml-10', onDecrease, onIncrease, onType, value, max, ...rest } = props
+  const [localValue, setLocalValue] = useState<number>(Number(value) || 0)
   const inputNumberRef = useRef<HTMLInputElement>(null)
   const onHandleType = (event: React.ChangeEvent<HTMLInputElement>) => {
     let _value = Number(event.target.value)
@@ -20,21 +21,24 @@ export default function QuantityController(props: QuantityControllerProps) {
       _value = 1
     }
     onType && onType(_value)
+    setLocalValue(_value)
   }
 
   const onHandleDecrease = () => {
-    let _value = Number(value) - 1
+    let _value = Number(value || localValue) - 1
     if (_value < 1) {
       _value = 1
     }
     onDecrease && onDecrease(_value)
+    setLocalValue(_value)
   }
   const onHandleIncrease = () => {
-    let _value = Number(value) + 1
+    let _value = Number(value || localValue) + 1
     if (max !== undefined && _value > max) {
       _value = max
     }
     onIncrease && onIncrease(_value)
+    setLocalValue(_value)
   }
 
   return (
@@ -58,7 +62,7 @@ export default function QuantityController(props: QuantityControllerProps) {
         classNameError='hidden'
         classNameInput='h-8 w-14 border-t border-b border-gray-300 p-1 text-center outline-none'
         onChange={onHandleType}
-        value={value}
+        value={value || localValue}
         type='text'
         ref={inputNumberRef}
         {...rest}

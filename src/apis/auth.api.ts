@@ -11,7 +11,11 @@ export const registerAccount = (body: RegisterAccountTypeParams) => {
 }
 
 export const login = (body: RegisterAccountTypeParams) => {
-  return http.post<AuthResponse>('/login', body)
+  return http.post<AuthResponse>('/login', body, {
+    headers: {
+      'expire-access-token': 60 * 60
+    }
+  })
 }
 
 export const logout = () => {

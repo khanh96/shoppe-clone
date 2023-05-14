@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -9,8 +9,12 @@ import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } 
 import Product from '../ProductList/components/Product'
 import { initialQueryConfig } from 'src/hooks/useQueryConfig'
 import QuantityController from 'src/components/QuantityController'
+import purchaseApi from 'src/apis/purchase.api'
+import { purchasesStatus } from 'src/constants/purchase'
+import { toast } from 'react-toastify'
 
 export default function ProductDetail() {
+  const queryClient = useQueryClient()
   const [buyCount, setBuyCount] = useState<number>(1)
   const { nameId } = useParams()
   const idProduct = getIdFromNameId(nameId as string)
@@ -18,7 +22,7 @@ export default function ProductDetail() {
   const [activeImage, setActiveImage] = useState<string>('')
   const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
   const { data: productDetailData } = useQuery({
-    queryKey: ['product'],
+    queryKey: ['product', idProduct],
     queryFn: () => productApi.getProduct(idProduct as string)
   })
   const product = productDetailData?.data.data
@@ -32,6 +36,16 @@ export default function ProductDetail() {
     queryFn: () => productApi.getProducts(queryConfig),
     enabled: Boolean(product), // khi product có data thì mới gọi
     staleTime: 3 * 60 * 1000
+  })
+  const addToCartMutation = useMutation({
+    mutationFn: (body: { product_id: string; buy_count: number }) => {
+      return purchaseApi.addToCart(body)
+    },
+    onSuccess: (data) => {
+      // Sau khi addToCart sẽ gọi tiếp api với query_key là purchases
+      queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+      toast.success(data.data.message, { autoClose: 1000 })
+    }
   })
   const productRelated = productRelatedData?.data.data
 
@@ -100,6 +114,9 @@ export default function ProductDetail() {
 
   const handleBuyCount = (value: number) => {
     setBuyCount(value)
+  }
+  const addToCart = () => {
+    addToCartMutation.mutate({ buy_count: buyCount, product_id: product?._id as string })
   }
 
   if (!product) return null
@@ -205,7 +222,10 @@ export default function ProductDetail() {
                 <div className='ml-6 text-sm text-gray-500'>{product.quantity} sản phẩm có sắn</div>
               </div>
               <div className='mt-8 flex items-center'>
-                <button className='flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize text-orange shadow-sm hover:bg-orange/5'>
+                <button
+                  onClick={addToCart}
+                  className='flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize text-orange shadow-sm hover:bg-orange/5'
+                >
                   <svg
                     enableBackground='new 0 0 15 15'
                     viewBox='0 0 15 15'
