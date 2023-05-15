@@ -535,6 +535,8 @@ useEffect(() => {
 }, [])
 ```
 
+- Nếu sử dụng **<Outlet/>** thì sẽ không sử dụng được **children** trong React nữa.
+
 ### http & Axios
 
 - Tạo biến và lưu accessToken từ localStorage để lúc lấy accessToken sẽ lấy từ RAM nhanh hơn là lấy từ bộ nhớ (localStorage)
@@ -639,4 +641,27 @@ const totalCheckedPurchasePrice = checkedPurchases.reduce((result, current) => {
 const totalCheckedPurchaseSavingPrice = checkedPurchases.reduce((result, current) => {
   return result + (current.product.price_before_discount - current.product.price) * current.buy_count
 }, 0)
+```
+
+- Sử dụng **EventTarget** của browser để dispatch event và tk app nhận event để xóa data trong context
+
+```tsx
+// gửi event
+export const LocalStorageEventTarget = new EventTarget()
+const clearLSEvent = new Event('clearLS')
+LocalStorageEventTarget.dispatchEvent(clearLSEvent)
+
+// nhận event và xóa auth
+const { resetAuth } = useContext(AppContext)
+useEffect(() => {
+  LocalStorageEventTarget.addEventListener('clearLS', () => {
+    resetAuth()
+  })
+
+  return () => {
+    LocalStorageEventTarget.removeEventListener('clearLS', () => {
+      resetAuth()
+    })
+  }
+}, [resetAuth])
 ```

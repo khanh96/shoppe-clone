@@ -46,10 +46,17 @@ class Http {
       },
       function (error: AxiosError) {
         // Lỗi 422 thì mới nhảy vào đấy
-        if (!(error.status !== HttpStatusCode.UnprocessableEntity)) {
+        if (!(error.response?.status !== HttpStatusCode.UnprocessableEntity)) {
           const data: any | undefined = error.response?.data
           const message = data?.message || error.message
           toast.error(message)
+        }
+        console.log(error)
+        if (error.response?.status === HttpStatusCode.Unauthorized) {
+          const data: any | undefined = error.response?.data
+          const message = data?.message || error.message
+          toast.error(message)
+          clearLS()
         }
         return Promise.reject(error)
       }
