@@ -28,7 +28,6 @@ export default function Header() {
     enabled: isAuthenticated // khi cos authen thì mới call api
   })
   const purchasesInCart = purchasesInCartData?.data.data
-  console.log('purchasesInCart=>', purchasesInCart)
 
   return (
     <div className='bg-[linear-gradient(-180deg,#f53d2d,#f63)] pb-5 pt-2 text-white'>
