@@ -1,4 +1,4 @@
-import { DeletePurChase, Purchase, PurchaseListStatus } from 'src/types/purchase.type'
+import { DeletePurchase, Purchase, PurchaseListStatus } from 'src/types/purchase.type'
 import { SuccessResponseApi } from 'src/types/utils.type'
 import http from 'src/utils/http'
 
@@ -16,8 +16,8 @@ export const purchaseApi = {
   updatePurchase: (body: { product_id: string; buy_count: number }) => {
     return http.put<SuccessResponseApi<Purchase>>(`${URL}/update-purchase`, body)
   },
-  deletePurChase: (purchaseIds: string[]) => {
-    return http.delete<SuccessResponseApi<DeletePurChase>>(`${URL}`, {
+  deletePurchase: (purchaseIds: string[]) => {
+    return http.delete<SuccessResponseApi<DeletePurchase>>(`${URL}`, {
       data: purchaseIds
     })
   },
@@ -25,5 +25,3 @@ export const purchaseApi = {
     return http.post<SuccessResponseApi<Purchase[]>>(`${URL}/buy-products`, body)
   }
 }
-
-export default purchaseApi

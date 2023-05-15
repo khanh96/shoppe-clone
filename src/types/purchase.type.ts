@@ -15,6 +15,11 @@ export interface Purchase {
   createdAt: string
   updatedAt: string
 }
-export interface DeletePurChase {
+export interface DeletePurchase {
   deleted_count: number
+}
+
+export interface ExtendedPurchase extends Purchase {
+  checked: boolean
+  disabled: boolean
 }

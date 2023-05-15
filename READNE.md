@@ -503,7 +503,7 @@ export const path = {
 
 - dùng framer motion để sử lý animation [https://www.framer.com/motion/]
 
-### React Router
+### React Router Dom
 
 - Sử dụng **useRouterElement** thì các router object sẽ sắp xếp theo thứ tự từ trên xuống dưới. Nên hãy chú ý cách sắp xếp các thứ tự router object. Để xử lý vấn để này thì dùng index
 - Sử dụng **useMatch** để check router khớp với path
@@ -511,6 +511,29 @@ export const path = {
 - Sử dụng **useSearchParams** để sort và filter trên thanh url. Viết 1 hook useSearchParams để handle
 
 - Khi 2 page qua navitage qua lại mà cùng 1 layout thì layout đó chỉ bị re-render lại chứ k bị unmout rồi render lại
+- Xóa state trong browser [https://developer.mozilla.org/en-US/docs/Web/API/History/replaceState]
+
+- Pass state và recive state from location (State trong history chỉ mất đi khi chuyên trang. Còn f5 thì sẽ k mất đi)
+
+```tsx
+// pass
+const navigate = useNavigate()
+navigate(path.cart, {
+  state: {
+    purchaseId: purchase._id
+  }
+})
+// recive
+const location = useLocation()
+const purchaseIdFromLocation = (location.state as { purchaseId: string | null })?.purchaseId
+// remove state from history
+useEffect(() => {
+  return () => {
+    // Khi refetch destroy cart sẽ xóa state from history
+    history.replaceState(null, '')
+  }
+}, [])
+```
 
 ### http & Axios
 
@@ -533,6 +556,8 @@ const { data: productRelated } = useQuery({
   enabled: Boolean(product) // khi product có data thì mới gọi
 })
 ```
+
+- Sử dụng **mutateAsync** thì phải dùng kèm try catch để handle error để xử lý lỗi (Dùng cũng được mà không cũng dc)
 
 ### TYPESCRIPT TIP
 
@@ -600,4 +625,18 @@ setExtendedPurchases(
 
 ```tsx
 const isAllChecked = extendedPurchases.every((purchase) => purchase.checked === true)
+```
+
+- Lấy ra mảng purchase đã được checked
+- Tính tổng số tiền phải trả
+- Tính tổng số tiền tiết kiệm
+
+```tsx
+const checkedPurchases = extendedPurchases.filter((purchase) => purchase.checked === true)
+const totalCheckedPurchasePrice = checkedPurchases.reduce((result, current) => {
+  return result + current.product.price * current.buy_count
+}, 0)
+const totalCheckedPurchaseSavingPrice = checkedPurchases.reduce((result, current) => {
+  return result + (current.product.price_before_discount - current.product.price) * current.buy_count
+}, 0)
 ```

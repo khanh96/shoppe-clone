@@ -1,7 +1,8 @@
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
-import { useEffect, useMemo, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { productApi } from 'src/apis/product.api'
 import ProductRating from 'src/components/ProductRating'
 import { Product as ProductType, ProductListConfig } from 'src/types/product.type'
@@ -9,9 +10,9 @@ import { formatCurrency, formatNumberToSocialStyle, getIdFromNameId, rateSale } 
 import Product from '../ProductList/components/Product'
 import { initialQueryConfig } from 'src/hooks/useQueryConfig'
 import QuantityController from 'src/components/QuantityController'
-import purchaseApi from 'src/apis/purchase.api'
+import { purchaseApi } from 'src/apis/purchase.api'
 import { purchasesStatus } from 'src/constants/purchase'
-import { toast } from 'react-toastify'
+import { path } from 'src/constants/path'
 
 export default function ProductDetail() {
   const queryClient = useQueryClient()
@@ -21,6 +22,7 @@ export default function ProductDetail() {
   const imageRef = useRef<HTMLImageElement>(null)
   const [activeImage, setActiveImage] = useState<string>('')
   const [currentIndexImages, setCurrentIndexImages] = useState([0, 5])
+  const navigate = useNavigate()
   const { data: productDetailData } = useQuery({
     queryKey: ['product', idProduct],
     queryFn: () => productApi.getProduct(idProduct as string)
@@ -41,12 +43,11 @@ export default function ProductDetail() {
     mutationFn: (body: { product_id: string; buy_count: number }) => {
       return purchaseApi.addToCart(body)
     },
-    onSuccess: (data) => {
-      // Sau khi addToCart sẽ gọi tiếp api với query_key là purchases
-      queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
-      toast.success(data.data.message, { autoClose: 1000 })
+    onError: (error) => {
+      console.log(error)
     }
   })
+
   const productRelated = productRelatedData?.data.data
 
   const currentImages = useMemo(() => {
@@ -58,10 +59,6 @@ export default function ProductDetail() {
       setActiveImage(product.images[0])
     }
   }, [product])
-
-  useEffect(() => {
-    setBuyCount(1)
-  }, [])
 
   const handleHoverActiveImage = (imageActive: string) => {
     setActiveImage(imageActive)
@@ -116,7 +113,29 @@ export default function ProductDetail() {
     setBuyCount(value)
   }
   const addToCart = () => {
-    addToCartMutation.mutate({ buy_count: buyCount, product_id: product?._id as string })
+    addToCartMutation.mutate(
+      { buy_count: buyCount, product_id: product?._id as string },
+      {
+        onSuccess: (data) => {
+          // Sau khi addToCart sẽ gọi tiếp api với query_key là purchases
+          queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+          toast.success(data.data.message, { autoClose: 1000 })
+        }
+      }
+    )
+  }
+
+  const buyNow = async () => {
+    const res = await addToCartMutation.mutateAsync({
+      product_id: (product?._id + '1') as string,
+      buy_count: buyCount
+    })
+    const purchase = res.data.data
+    navigate(path.cart, {
+      state: {
+        purchaseId: purchase._id
+      }
+    })
   }
 
   if (!product) return null
@@ -251,7 +270,10 @@ export default function ProductDetail() {
                   </svg>
                   Thêm vào giỏ hàng
                 </button>
-                <button className='ml-4 flex h-12 min-w-[5rem] items-center justify-center border bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'>
+                <button
+                  onClick={buyNow}
+                  className='ml-4 flex h-12 min-w-[5rem] items-center justify-center border bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'
+                >
                   Mua ngay
                 </button>
               </div>
