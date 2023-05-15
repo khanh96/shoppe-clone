@@ -7,10 +7,11 @@ interface QuantityControllerProps extends InputNumberProps {
   onIncrease?: (value: number) => void
   onDecrease?: (value: number) => void
   onType?: (value: number) => void
+  onFocusOut?: (value: number) => void
 }
 
 export default function QuantityController(props: QuantityControllerProps) {
-  const { classNameWrapper = 'ml-10', onDecrease, onIncrease, onType, value, max, ...rest } = props
+  const { classNameWrapper = 'ml-10', onDecrease, onIncrease, onType, value, max, onFocusOut, ...rest } = props
   const [localValue, setLocalValue] = useState<number>(Number(value) || 0)
   const inputNumberRef = useRef<HTMLInputElement>(null)
   const onHandleType = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +41,9 @@ export default function QuantityController(props: QuantityControllerProps) {
     onIncrease && onIncrease(_value)
     setLocalValue(_value)
   }
+  const onHandleFocusOut = (event: React.FocusEvent<HTMLInputElement, Element>) => {
+    onFocusOut && onFocusOut(Number(event.target.value))
+  }
 
   return (
     <div className={`${classNameWrapper} flex items-center`}>
@@ -60,11 +64,15 @@ export default function QuantityController(props: QuantityControllerProps) {
       </button>
       <InputNumber
         classNameError='hidden'
-        classNameInput='h-8 w-14 border-t border-b border-gray-300 p-1 text-center outline-none'
+        classNameInput='h-8 w-14 border-t border-b border-gray-300 p-1 text-center outline-none focus-visible:shadow-[0px_0px_0px_2px_#fff,0px_0px_0px_4px_#000]'
         onChange={onHandleType}
+        onBlur={onHandleFocusOut}
         value={value || localValue}
         type='text'
         ref={inputNumberRef}
+        onFocus={() => {
+          console.log('focus')
+        }}
         {...rest}
       />
       <button

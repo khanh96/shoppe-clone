@@ -579,3 +579,25 @@ function AppTest() {
 
 - URL thân thiện có thêm tên sản phẩm trên thanh URL
   > vd [https://shopee.vn/%C3%81o-s%C6%A1-mi-nam-tay-ng%E1%BA%AFn-v%E1%BA%A3i-l%E1%BB%A5a-th%C3%A1i-cao-c%E1%BA%A5p-in-h%E1%BB%8Da-ti%E1%BA%BFt-BBR-m%E1%BA%ABu-m%E1%BB%9Bi-gi%C3%A1-r%E1%BA%BB-i.682198966.16824230912?sp_atk=22efaf8b-08ed-42d7-a442-4923bc30629a&xptdk=22efaf8b-08ed-42d7-a442-4923bc30629a]
+
+### Immer
+
+- Sử dụng Immer để mutate state trong react
+
+```tsx
+import { produce } from 'immer'
+const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>([])
+setExtendedPurchases(
+  produce((draft) => {
+    draft[productIndex].checked = valueChecked
+  })
+)
+```
+
+### JAVASCRIPT && LODASH
+
+- Check mọi object purchase checked trong mảng extendedPurchases === true thì isAllChecked === true
+
+```tsx
+const isAllChecked = extendedPurchases.every((purchase) => purchase.checked === true)
+```

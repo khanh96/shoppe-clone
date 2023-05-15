@@ -1,21 +1,103 @@
-import { useQuery } from '@tanstack/react-query'
-import React from 'react'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { produce } from 'immer'
+import { keyBy } from 'lodash'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import purchaseApi from 'src/apis/purchase.api'
 import Button from 'src/components/Button'
 import QuantityController from 'src/components/QuantityController'
 import { path } from 'src/constants/path'
 import { purchasesStatus } from 'src/constants/purchase'
+import { Purchase } from 'src/types/purchase.type'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 
+interface ExtendedPurchase extends Purchase {
+  checked: boolean
+  disabled: boolean
+}
+
 export default function Cart(): JSX.Element {
-  const { data: purchasesInCartData } = useQuery({
+  const [extendedPurchases, setExtendedPurchases] = useState<ExtendedPurchase[]>([])
+  const { data: purchasesInCartData, refetch: purchasesRefetch } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.inCart }],
     queryFn: () => {
       return purchaseApi.getPurchases({ status: purchasesStatus.inCart })
     }
   })
+  const updatePurchaseMutation = useMutation({
+    mutationFn: purchaseApi.updatePurchase,
+    onSuccess: () => {
+      purchasesRefetch()
+    }
+  })
   const purchasesInCart = purchasesInCartData?.data.data
+  // check mọi object purchase checked trong mảng extendedPurchases === true thì isAllChecked === true
+  const isAllChecked = extendedPurchases.every((purchase) => purchase.checked === true)
+
+  // console.log(purchasesInCart)
+  useEffect(() => {
+    if (purchasesInCart) {
+      setExtendedPurchases((preExtendedPurchases) => {
+        const preExtendedPurchasesObject = keyBy(preExtendedPurchases, '_id')
+        return (
+          purchasesInCart.map((purchase) => {
+            return { ...purchase, checked: Boolean(preExtendedPurchasesObject[purchase._id]?.checked), disabled: false }
+          }) || []
+        )
+      })
+    }
+  }, [purchasesInCart])
+
+  const handleCheck = (purchaseIndex: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const valueChecked = event.target.checked
+    // sử dụng immer js để mutate state
+    setExtendedPurchases(
+      produce((draft) => {
+        draft[purchaseIndex].checked = valueChecked
+      })
+    )
+  }
+  const handleChecked = () => {
+    setExtendedPurchases((preExtendedPurchase) => {
+      return preExtendedPurchase.map((p) => {
+        return {
+          ...p,
+          checked: !isAllChecked
+        }
+      })
+    })
+  }
+  const handleDeleteChecked = () => {
+    setExtendedPurchases((preExtendedPurchase) => {
+      return preExtendedPurchase.map((p) => {
+        return {
+          ...p,
+          checked: false
+        }
+      })
+    })
+  }
+  const handleQuantity = (purchaseIndex: number, value: number, enable: boolean) => {
+    const purchase = extendedPurchases[purchaseIndex]
+    if (enable) {
+      setExtendedPurchases(
+        produce((draft) => {
+          draft[purchaseIndex].disabled = true
+        })
+      )
+      updatePurchaseMutation.mutate({
+        product_id: purchase.product._id,
+        buy_count: value
+      })
+    }
+  }
+  const handleTypeQuantity = (purchaseIndex: number, value: number) => {
+    setExtendedPurchases(
+      produce((draft) => {
+        draft[purchaseIndex].buy_count = value
+      })
+    )
+  }
 
   return (
     <div className='bg-neutral-100 py-16'>
@@ -27,7 +109,12 @@ export default function Cart(): JSX.Element {
               <div className='col-span-6'>
                 <div className='flex items-center'>
                   <div className='flex flex-shrink-0 items-center justify-center pr-3'>
-                    <input type='checkbox' className='h-5 w-5 accent-orange' />
+                    <input
+                      type='checkbox'
+                      className='h-5 w-5 accent-orange'
+                      checked={isAllChecked}
+                      onChange={handleChecked}
+                    />
                   </div>
                   <div className='flex-grow text-black'>Sản phẩm</div>
                 </div>
@@ -43,7 +130,7 @@ export default function Cart(): JSX.Element {
             </div>
             {/* BODY */}
             <div className='my-3 rounded-sm shadow'>
-              {purchasesInCart?.map((purchase, index) => {
+              {extendedPurchases?.map((purchase, index) => {
                 return (
                   <div
                     key={purchase._id}
@@ -52,7 +139,12 @@ export default function Cart(): JSX.Element {
                     <div className='col-span-6'>
                       <div className='flex'>
                         <div className='flex flex-shrink-0 items-center justify-center pr-3'>
-                          <input type='checkbox' className='h-5 w-5 accent-orange' />
+                          <input
+                            type='checkbox'
+                            className='h-5 w-5 accent-orange'
+                            checked={purchase.checked}
+                            onChange={handleCheck(index)}
+                          />
                         </div>
                         <div className='flex-grow'>
                           <div className='flex items-center'>
@@ -95,6 +187,19 @@ export default function Cart(): JSX.Element {
                             classNameWrapper='flex items-center'
                             max={purchase.product.quantity}
                             value={purchase.buy_count}
+                            onIncrease={(value) => handleQuantity(index, value, value <= purchase.product.quantity)}
+                            onDecrease={(value) => handleQuantity(index, value, value >= 1)}
+                            onType={(value) => handleTypeQuantity(index, value)}
+                            onFocusOut={(value) =>
+                              handleQuantity(
+                                index,
+                                value,
+                                value >= 1 &&
+                                  value <= purchase.product.quantity &&
+                                  value !== (purchasesInCart as Purchase[])[index].buy_count
+                              )
+                            }
+                            disabled={purchase.disabled}
                           />
                         </div>
                         <div className='col-span-1'>
@@ -116,11 +221,20 @@ export default function Cart(): JSX.Element {
         <div className='sticky bottom-0 z-10 flex flex-col rounded-sm bg-white p-5 shadow sm:flex-row sm:items-center'>
           <div className='flex items-center justify-start '>
             <div className='flex flex-shrink-0 items-center justify-center pr-3'>
-              <input type='checkbox' className='h-5 w-5 accent-orange' />
+              <input
+                type='checkbox'
+                className='h-5 w-5 accent-orange'
+                checked={isAllChecked}
+                onChange={handleChecked}
+              />
             </div>
             <div>
-              <button className='mx-3 border-none bg-none'>Chọn tất cả</button>
-              <button className='mx-3 border-none bg-none'>Xóa</button>
+              <button onClick={handleChecked} className='mx-3 border-none bg-none'>
+                Chọn tất cả ({extendedPurchases.length})
+              </button>
+              <button onClick={handleDeleteChecked} className='mx-3 border-none bg-none'>
+                Xóa
+              </button>
             </div>
           </div>
           <div className='mt-5 flex flex-col sm:ml-auto  sm:mt-0 sm:flex-row sm:items-center'>
