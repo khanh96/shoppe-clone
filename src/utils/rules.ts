@@ -84,13 +84,13 @@ export const schema = yup.object({
   password: yup
     .string()
     .required('Trường Password phải bắt buộc')
-    .min(6, 'Độ dài email từ 6 - 160 ký tự')
-    .max(160, 'Độ dài email từ 6 - 160 ký tự'),
+    .min(6, 'Độ dài password từ 6 - 160 ký tự')
+    .max(160, 'Độ dài password từ 6 - 160 ký tự'),
   confirm_password: yup
     .string()
     .required('Trường Confirm Password phải bắt buộc')
-    .min(6, 'Độ dài email từ 6 - 160 ký tự')
-    .max(160, 'Độ dài email từ 6 - 160 ký tự')
+    .min(6, 'Độ dài confirm_password từ 6 - 160 ký tự')
+    .max(160, 'Độ dài confirm_password từ 6 - 160 ký tự')
     .oneOf([yup.ref('password')], 'Nhập lại Confirm Password không khớp'),
   price_min: yup.string().test({
     name: 'price-not-allowed',
@@ -104,6 +104,18 @@ export const schema = yup.object({
   }),
   name: yup.string().required()
 })
+
+export const userSchema = yup.object({
+  name: yup.string().max(160, 'Độ dài tối đa name là 160 ký tự'),
+  phone: yup.string().max(20, 'Độ dài tối đa phone là 20 ký tự'),
+  address: yup.string().max(160, 'Độ dài tối đa address là 160 ký tự'),
+  avatar: yup.string().max(1000, 'Độ dài tối đã avatar là 1000 ký tự'),
+  date_of_birth: yup.date().max(new Date(), 'Hãy chọn một ngày trong quá khứ'),
+  new_password: yup.string().min(6, 'Độ dài password từ 6 - 160 ký tự').max(160, 'Độ dài password từ 6 - 160 ký tự'),
+  password: schema.fields['password'], // kế thừa rules trong yup
+  confirm_password: schema.fields['confirm_password']
+})
+
 // export type dùng schema
 export const registerSchema = schema.pick(['email', 'password', 'confirm_password'])
 export type RegisterSchemaType = yup.InferType<typeof registerSchema>
@@ -117,6 +129,9 @@ export type PriceRangeSchemaType = yup.InferType<typeof priceRangeSchema>
 
 export const nameSchema = schema.pick(['name'])
 export type NameSchemaType = yup.InferType<typeof nameSchema>
+
+export const profileSchema = userSchema.pick(['name', 'phone', 'address', 'date_of_birth'])
+export type UserSchemaType = yup.InferType<typeof userSchema>
 
 // kế thừa type của registerSchema dùng pick
 //export const emailASchema = registerSchema.pick(['email','password'])
