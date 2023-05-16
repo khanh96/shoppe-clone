@@ -492,6 +492,29 @@ export const path = {
   **rect.height** và **rect.width** là width và height mà hiển thị trên web (chúng ta thấy)
   **offsetX** và **offsetY** vị trí x,y con trỏ chuột trong element
 
+* Sự dự useRef để trigger button show input file để chọn file
+* preview file khi upload file
+
+```tsx
+const previewFile = useMemo(() => {
+  return file ? URL.createObjectURL(file) : ''
+}, [file])
+```
+
+- Flow upload ảnh
+
+* Flow 1:
+  Nhấp upload: upload ảnh lên server luôn => server trả về url ảnh
+  Nhấn submit thì gửi ảnh cộng với data lên server
+  Ửu Điểm: là nhanh chóng upload ảnh
+  Nhược điểm: User có thể spam ảnh, ảnh hưởng đến sever. Gây server có nhiều rác
+
+* Flow 2:
+  Nhấn upload: không upload lên server
+  Nhấn submit thì tiến hành upload lến server, nếu upload thành công thì tiến hành gọi api updateProfile
+  Ưu điểm: Không bị spam
+  Nhược điểm: phải gọi 2 api tuần tự
+
 ### Floating-ui
 
 - Sử dụng floating UI để tính cách position [https://floating-ui.com/docs/getting-started]

@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios'
+import config from 'src/constants/config'
 import HttpStatusCode from 'src/constants/httpStatusCode.enum'
-
+import userImage from 'src/assets/images/no-avatar.png'
 /**
  * Phương pháp "type predicate" dùng để thu hẹp kiểu của một biến
  * ✅ Đầu tiên chúng ta sẽ khai báo một function check kiểm tra cấu trúc về mặc logic javascript
@@ -45,3 +46,5 @@ export const getIdFromNameId = (nameId: string) => {
   const arr = nameId.split('-id-')
   return arr[arr.length - 1]
 }
+
+export const getAvatarUrl = (avatarName?: string) => (avatarName ? `${config.baseURL}images/${avatarName}` : userImage)

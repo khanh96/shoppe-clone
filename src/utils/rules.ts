@@ -130,7 +130,7 @@ export type PriceRangeSchemaType = yup.InferType<typeof priceRangeSchema>
 export const nameSchema = schema.pick(['name'])
 export type NameSchemaType = yup.InferType<typeof nameSchema>
 
-export const profileSchema = userSchema.pick(['name', 'phone', 'address', 'date_of_birth'])
+export const profileSchema = userSchema.pick(['name', 'phone', 'address', 'date_of_birth', 'avatar'])
 export type UserSchemaType = yup.InferType<typeof userSchema>
 
 // kế thừa type của registerSchema dùng pick

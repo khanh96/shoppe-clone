@@ -4,6 +4,7 @@ import HttpStatusCode from 'src/constants/httpStatusCode.enum'
 import { clearLS, getAccessTokenFromLS, setAccessTokenToLS, setProfileToLS } from './auth'
 import { AuthResponse } from 'src/types/auth.type'
 import { path } from 'src/constants/path'
+import config from 'src/constants/config'
 
 class Http {
   instance: AxiosInstance
@@ -12,7 +13,7 @@ class Http {
     // Tạo biến và lưu accessToken từ localStorage để lúc lấy accessToken sẽ lấy từ RAM nhanh hơn là lấy từ bộ nhớ (localStorage)
     this.accessToken = getAccessTokenFromLS()
     this.instance = axios.create({
-      baseURL: 'https://api-ecom.duthanhduoc.com/',
+      baseURL: config.baseURL,
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json'
@@ -45,13 +46,13 @@ class Http {
         return response
       },
       function (error: AxiosError) {
-        // Lỗi 422 thì mới nhảy vào đấy
-        if (!(error.response?.status !== HttpStatusCode.UnprocessableEntity)) {
+        // Các lỗi không phải là 422 thì mới nhảy vào đấy
+        if (error.response?.status !== HttpStatusCode.UnprocessableEntity) {
           const data: any | undefined = error.response?.data
           const message = data?.message || error.message
           toast.error(message)
         }
-        console.log(error)
+        // Các lỗi là 401 thì mới nhảy vào đấy
         if (error.response?.status === HttpStatusCode.Unauthorized) {
           const data: any | undefined = error.response?.data
           const message = data?.message || error.message
