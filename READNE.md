@@ -560,6 +560,8 @@ useEffect(() => {
 
 - Nếu sử dụng **<Outlet/>** thì sẽ không sử dụng được **children** trong React nữa.
 
+- **NavLink** sử dụng isActive với cá router bình thường **http://abc/xyz**. Không sử dụng được với query params
+
 ### http & Axios
 
 - Tạo biến và lưu accessToken từ localStorage để lúc lấy accessToken sẽ lấy từ RAM nhanh hơn là lấy từ bộ nhớ (localStorage)

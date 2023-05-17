@@ -146,7 +146,6 @@ export default function Cart(): JSX.Element {
           buy_count: purchase.buy_count
         }
       })
-      console.log(body)
       buyProductsMutation.mutate(body)
     }
   }
