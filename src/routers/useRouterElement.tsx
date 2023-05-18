@@ -15,6 +15,7 @@ import Profile from 'src/pages/User/pages/Account/pages/Profile'
 import UserLayout from 'src/pages/User/layouts/UserLayout'
 import ChangePassword from 'src/pages/User/pages/Account/pages/ChangePassword'
 import Account from 'src/pages/User/pages/Account'
+import NotFound from 'src/pages/NotFound'
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -22,12 +23,13 @@ function ProtectedRoute() {
 }
 
 function RejectedRoute() {
+  console.log('1')
   const { isAuthenticated } = useContext(AppContext)
   return !isAuthenticated ? <Outlet /> : <Navigate to={path.home} />
 }
 
 export default function useRouterElement() {
-  const element = useRoutes([
+  const routeElements = useRoutes([
     {
       path: '',
       element: <ProtectedRoute />,
@@ -93,7 +95,15 @@ export default function useRouterElement() {
       ]
     },
     {
-      path: path.home,
+      path: path.productDetail,
+      element: (
+        <MainLayout>
+          <ProductDetail />
+        </MainLayout>
+      )
+    },
+    {
+      path: '',
       index: true,
       element: (
         <MainLayout>
@@ -102,15 +112,14 @@ export default function useRouterElement() {
       )
     },
     {
-      path: `${path.productDetail}`,
-      index: true,
+      path: '*',
       element: (
         <MainLayout>
-          <ProductDetail />
+          <NotFound />
         </MainLayout>
       )
     }
   ])
 
-  return element
+  return routeElements
 }

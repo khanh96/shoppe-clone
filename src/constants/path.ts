@@ -8,6 +8,6 @@ export const path = {
   profile: '/user/account/profile',
   changePassword: '/user/account/password',
   historyPurchase: '/user/purchase',
-  productDetail: '/:nameId',
+  productDetail: ':nameId',
   cart: '/cart'
 } as const

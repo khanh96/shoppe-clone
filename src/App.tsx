@@ -7,7 +7,7 @@ import { LocalStorageEventTarget } from './utils/auth'
 import { AppContext } from './contexts/app.context'
 
 function App() {
-  const element = useRouterElement()
+  const routeElements = useRouterElement()
   const { resetAuth } = useContext(AppContext)
 
   useEffect(() => {
@@ -24,7 +24,7 @@ function App() {
 
   return (
     <>
-      {element}
+      {routeElements}
       <ToastContainer />
     </>
   )
