@@ -9,6 +9,7 @@ interface InputTypeProps extends React.InputHTMLAttributes<HTMLInputElement> {
   register?: UseFormRegister<any>
   rules?: RegisterOptions
   errorMessage?: string
+  showIconEye?: boolean
 }
 
 export default function Input({
@@ -20,6 +21,7 @@ export default function Input({
   errorMessage,
   classNameInput = 'w-full rounded-sm border border-gray-300 p-3 outline-none focus:border-gray-500 focus:shadow-sm',
   classNameError = 'mt-1 min-h-[1.25rem] text-left text-sm text-red-600',
+  showIconEye = true,
   ...rest
 }: InputTypeProps) {
   const [openEye, setOpenEye] = useState(false)
@@ -43,7 +45,7 @@ export default function Input({
   return (
     <div className={classNameWrap}>
       <input className={classNameInput} {...registerResult} {...rest} type={handleType()} />
-      {type === 'password' && !openEye && (
+      {showIconEye && type === 'password' && !openEye && (
         <svg
           fill='none'
           viewBox='0 0 20 10'
@@ -58,7 +60,7 @@ export default function Input({
           />
         </svg>
       )}
-      {type === 'password' && openEye && (
+      {showIconEye && type === 'password' && openEye && (
         <svg
           fill='none'
           viewBox='0 0 20 12'

@@ -5,6 +5,7 @@ import { clearLS, getAccessTokenFromLS, setAccessTokenToLS, setProfileToLS } fro
 import { AuthResponse } from 'src/types/auth.type'
 import { path } from 'src/constants/path'
 import config from 'src/constants/config'
+import { redirectToPageNotFound } from './utils'
 
 class Http {
   instance: AxiosInstance
@@ -58,6 +59,12 @@ class Http {
           const message = data?.message || error.message
           toast.error(message)
           clearLS()
+        }
+        if (
+          error.response?.status === HttpStatusCode.NotFound ||
+          error.response?.status === HttpStatusCode.BadRequest
+        ) {
+          redirectToPageNotFound()
         }
         return Promise.reject(error)
       }

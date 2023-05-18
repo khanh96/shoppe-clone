@@ -10,7 +10,6 @@ import useQueryConfig from 'src/hooks/useQueryConfig'
 
 export default function ProductList() {
   const queryConfig = useQueryConfig()
-
   const { data: productsData } = useQuery({
     queryKey: ['products', queryConfig],
     queryFn: () => productApi.getProducts(queryConfig as ProductListConfig),

@@ -9,5 +9,6 @@ export const path = {
   changePassword: '/user/account/password',
   historyPurchase: '/user/purchase',
   productDetail: ':nameId',
-  cart: '/cart'
+  cart: '/cart',
+  notFound: '/404'
 } as const

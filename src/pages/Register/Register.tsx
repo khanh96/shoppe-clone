@@ -77,22 +77,24 @@ export default function Register() {
                 errorMessage={errors.email?.message}
               />
               <Input
-                classNameWrap='mt-3'
+                classNameWrap='mt-3 relative'
                 type='password'
                 placeholder='Password'
                 register={register}
                 name='password'
                 // rules={rules.password}
                 errorMessage={errors.password?.message}
+                showIconEye={false}
               />
               <Input
-                classNameWrap='mt-3'
+                classNameWrap='mt-3 relative'
                 type='password'
                 placeholder='Confirm password'
                 register={register}
                 name='confirm_password'
                 // rules={rules.confirm_password}
                 errorMessage={errors.confirm_password?.message}
+                showIconEye={false}
               />
               <div className='mt-3'>
                 <Button

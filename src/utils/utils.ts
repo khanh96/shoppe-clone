@@ -2,6 +2,7 @@ import axios, { AxiosError } from 'axios'
 import config from 'src/constants/config'
 import HttpStatusCode from 'src/constants/httpStatusCode.enum'
 import userImage from 'src/assets/images/no-avatar.png'
+import { Navigate } from 'react-router-dom'
 /**
  * Phương pháp "type predicate" dùng để thu hẹp kiểu của một biến
  * ✅ Đầu tiên chúng ta sẽ khai báo một function check kiểm tra cấu trúc về mặc logic javascript
@@ -48,3 +49,9 @@ export const getIdFromNameId = (nameId: string) => {
 }
 
 export const getAvatarUrl = (avatarName?: string) => (avatarName ? `${config.baseURL}images/${avatarName}` : userImage)
+
+export const PageNotFoundEventTarget = new EventTarget()
+export const redirectToPageNotFound = () => {
+  const redirectToPageNotFoundEvent = new Event('pageNotFound')
+  PageNotFoundEventTarget.dispatchEvent(redirectToPageNotFoundEvent)
+}

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { productApi } from 'src/apis/product.api'
 import ProductRating from 'src/components/ProductRating'
@@ -137,16 +137,18 @@ export default function ProductDetail() {
       }
     })
   }
-
+  // if (!nameId?.includes('-id-')) {
+  //   return <Navigate to={path.notFound} />
+  // }
   if (!product) return null
   return (
-    <div className='bg-gray-200 px-6 py-4'>
+    <div className='bg-gray-200 py-4'>
       <div className='container'>
         <div className='bg-white p-4 shadow'>
-          <div className='grid grid-cols-12 gap-9'>
-            <div className='col-span-5'>
+          <div className='grid grid-cols-12 gap-2 lg:gap-9'>
+            <div className='col-span-12 md:col-span-5'>
               <div
-                className=' relative w-full cursor-zoom-in overflow-hidden pt-[100%] shadow'
+                className='relative w-full cursor-zoom-in overflow-hidden pt-[100%] shadow'
                 onMouseMove={handleZoomImage}
                 onMouseLeave={handleResetZoomImage}
               >
@@ -207,7 +209,7 @@ export default function ProductDetail() {
                 </button>
               </div>
             </div>
-            <div className='col-span-7'>
+            <div className='col-span-12 md:col-span-7'>
               <h1 className='text-xl font-medium uppercase'>{product.name}</h1>
               <div className='mt-8 flex items-center'>
                 <span className='mr-1 border-b border-b-orange text-orange'>{product.rating}</span>
@@ -222,7 +224,7 @@ export default function ProductDetail() {
                   <span className='ml-1 text-gray-500'>Đã bán</span>
                 </div>
               </div>
-              <div className='mt-8 flex items-center bg-gray-50 px-5 py-4'>
+              <div className='mt-8 flex flex-col items-center bg-gray-50 px-5 py-4 md:flex-row'>
                 <div className='text-gray-500 line-through'>{formatCurrency(product.price_before_discount)}</div>
                 <div className='ml-3 text-3xl font-medium text-orange'>₫{formatCurrency(product.price)}</div>
                 <div className='ml-4 rounded-sm bg-orange px-1 py-[2px] text-xs font-semibold uppercase text-white'>

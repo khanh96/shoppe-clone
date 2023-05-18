@@ -690,3 +690,7 @@ useEffect(() => {
   }
 }, [resetAuth])
 ```
+
+### Performance
+
+- Dùng **lazy load** để đến đâu tải đến đấy cos nghĩa là vào trang nào thì tải trang ý. Không cần phải tải hết khi vô web.

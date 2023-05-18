@@ -1,21 +1,31 @@
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
-import { useContext } from 'react'
-import ProductList from '../pages/ProductList'
-import Login from 'src/pages/Login'
-import Register from 'src/pages/Register'
+import { Suspense, lazy, useContext } from 'react'
+// import ProductList from '../pages/ProductList'
+// import Login from 'src/pages/Login'
+// import Register from 'src/pages/Register'
 import RegisterLayout from 'src/layouts/RegisterLayout'
 import MainLayout from 'src/layouts/MainLayout/MainLayout'
 import { AppContext } from 'src/contexts/app.context'
 import { path } from 'src/constants/path'
-import ProductDetail from 'src/pages/ProductDetail'
-import Cart from 'src/pages/Cart'
+// import ProductDetail from 'src/pages/ProductDetail'
+// import Cart from 'src/pages/Cart'
 import CartLayout from 'src/layouts/CartLayout'
-import HistoryPurchase from 'src/pages/User/pages/HIstoryPurchase'
-import Profile from 'src/pages/User/pages/Account/pages/Profile'
+// import HistoryPurchase from 'src/pages/User/pages/HIstoryPurchase'
+// import Profile from 'src/pages/User/pages/Account/pages/Profile'
 import UserLayout from 'src/pages/User/layouts/UserLayout'
-import ChangePassword from 'src/pages/User/pages/Account/pages/ChangePassword'
+// import ChangePassword from 'src/pages/User/pages/Account/pages/ChangePassword'
 import Account from 'src/pages/User/pages/Account'
-import NotFound from 'src/pages/NotFound'
+// import NotFound from 'src/pages/NotFound'
+
+const Login = lazy(() => import('src/pages/Login'))
+const ProductList = lazy(() => import('../pages/ProductList'))
+const Profile = lazy(() => import('src/pages/User/pages/Account/pages/Profile'))
+const Register = lazy(() => import('src/pages/Register'))
+const ProductDetail = lazy(() => import('src/pages/ProductDetail'))
+const Cart = lazy(() => import('src/pages/Cart'))
+const ChangePassword = lazy(() => import('src/pages/User/pages/Account/pages/ChangePassword'))
+const HistoryPurchase = lazy(() => import('src/pages/User/pages/HIstoryPurchase'))
+const NotFound = lazy(() => import('src/pages/NotFound'))
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -112,7 +122,7 @@ export default function useRouterElement() {
       )
     },
     {
-      path: '*',
+      path: path.notFound,
       element: (
         <MainLayout>
           <NotFound />
@@ -121,5 +131,5 @@ export default function useRouterElement() {
     }
   ])
 
-  return routeElements
+  return <Suspense>{routeElements}</Suspense>
 }
