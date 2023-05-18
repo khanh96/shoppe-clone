@@ -33,7 +33,6 @@ function ProtectedRoute() {
 }
 
 function RejectedRoute() {
-  console.log('1')
   const { isAuthenticated } = useContext(AppContext)
   return !isAuthenticated ? <Outlet /> : <Navigate to={path.home} />
 }

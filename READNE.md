@@ -268,6 +268,11 @@ export default defineConfig({
 })
 ```
 
+- Cài Rollup: yarn add --dev rollup-plugin-visualizer
+
+* đc build dựa trên rollup
+* Thuật ngữ Tree Shaking là cho phép import những thứ cần thiết để giảm dung lượng file build.
+
 ### Cài extension và setup VS Code
 
 Các Extension nên cài

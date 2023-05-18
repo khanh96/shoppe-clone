@@ -8,7 +8,7 @@ import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import { ErrorResponseApi } from 'src/types/utils.type'
 import { UserSchemaType, passwordSchema } from 'src/utils/rules'
-import { isAxiosUnprocessableEntity } from 'src/utils/utils'
+import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 
 export type FormPassword = Pick<UserSchemaType, 'password' | 'new_password' | 'confirm_password'>
 
@@ -40,7 +40,7 @@ export default function ChangePassword() {
       reset()
       toast.success(res.data.message)
     } catch (error) {
-      if (isAxiosUnprocessableEntity<ErrorResponseApi<Omit<FormPassword, 'confirm_password'>>>(error)) {
+      if (isAxiosUnprocessableEntityError<ErrorResponseApi<Omit<FormPassword, 'confirm_password'>>>(error)) {
         const formError = error.response?.data.data
         // cách show lỗi với nhiều trường trong 1 form
         if (formError) {

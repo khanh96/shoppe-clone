@@ -12,7 +12,7 @@ import DateSelect from 'src/pages/User/components/DateSelect'
 import { ErrorResponseApi } from 'src/types/utils.type'
 import { setProfileToLS } from 'src/utils/auth'
 import { UserSchemaType, profileSchema } from 'src/utils/rules'
-import { getAvatarUrl, isAxiosUnprocessableEntity } from 'src/utils/utils'
+import { getAvatarUrl, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import Info from './Info'
 
 export type FormData = Pick<UserSchemaType, 'name' | 'phone' | 'address' | 'date_of_birth' | 'avatar'>
@@ -90,7 +90,7 @@ export default function Profile() {
       setProfileToLS(res.data.data)
       toast.success(res.data.message)
     } catch (error) {
-      if (isAxiosUnprocessableEntity<ErrorResponseApi<FormDataError>>(error)) {
+      if (isAxiosUnprocessableEntityError<ErrorResponseApi<FormDataError>>(error)) {
         const formError = error.response?.data.data
         // cách show lỗi với nhiều trường trong 1 form
         if (formError) {

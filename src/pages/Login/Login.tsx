@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
-import { omit } from 'lodash'
+import omit from 'lodash/omit'
 import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
@@ -11,7 +11,7 @@ import { path } from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
 import { ErrorResponseApi } from 'src/types/utils.type'
 import { loginSchema, LoginSchemaType } from 'src/utils/rules'
-import { isAxiosUnprocessableEntity } from 'src/utils/utils'
+import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 
 export type FormData = LoginSchemaType
 
@@ -41,7 +41,7 @@ export default function Login() {
         navigate('/')
       },
       onError: (error) => {
-        if (isAxiosUnprocessableEntity<ErrorResponseApi<FormData>>(error)) {
+        if (isAxiosUnprocessableEntityError<ErrorResponseApi<FormData>>(error)) {
           const formError = error.response?.data.data
           // cách show lỗi với nhiều trường trong 1 form
           if (formError) {

@@ -1,4 +1,5 @@
-import { range, rangeRight } from 'lodash'
+import rangeRight from 'lodash/rangeRight'
+import range from 'lodash/range'
 import React, { useEffect, useState } from 'react'
 
 interface DateSelectProps {

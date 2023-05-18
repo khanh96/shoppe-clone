@@ -32,7 +32,6 @@ export default function Popover({
     ],
     placement: placement
   })
-  floatingStyles.left
   const showPopover = () => {
     setIsOpenTooltip(true)
   }
@@ -43,6 +42,7 @@ export default function Popover({
   // const overrideFloatingStyles = useMemo(() => {
   //   return { ...floatingStyles, left: `${floatingStyles.left ? floatingStyles.left : 0 + 20}px` }
   // }, [floatingStyles])
+  console.log(floatingStyles)
   return (
     <Element className={className} ref={refs.setReference} onMouseEnter={showPopover} onMouseLeave={hidePopover}>
       {children}
