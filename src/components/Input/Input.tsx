@@ -5,6 +5,7 @@ interface InputTypeProps extends React.InputHTMLAttributes<HTMLInputElement> {
   classNameWrap?: string
   classNameInput?: string
   classNameError?: string
+  classNameIcon?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register?: UseFormRegister<any>
   rules?: RegisterOptions
@@ -21,6 +22,7 @@ export default function Input({
   errorMessage,
   classNameInput = 'w-full rounded-sm border border-gray-300 p-3 outline-none focus:border-gray-500 focus:shadow-sm',
   classNameError = 'mt-1 min-h-[1.25rem] text-left text-sm text-red-600',
+  classNameIcon = 'absolute right-3 top-2 h-5 w-5 cursor-pointer',
   showIconEye = true,
   ...rest
 }: InputTypeProps) {
@@ -46,12 +48,7 @@ export default function Input({
     <div className={classNameWrap}>
       <input className={classNameInput} {...registerResult} {...rest} type={handleType()} />
       {showIconEye && type === 'password' && !openEye && (
-        <svg
-          fill='none'
-          viewBox='0 0 20 10'
-          className='absolute right-3 top-2 h-5 w-5 cursor-pointer'
-          onClick={toggleEye}
-        >
+        <svg fill='none' viewBox='0 0 20 10' className={classNameIcon} onClick={toggleEye}>
           <path
             stroke='none'
             fill='#000'
@@ -61,12 +58,7 @@ export default function Input({
         </svg>
       )}
       {showIconEye && type === 'password' && openEye && (
-        <svg
-          fill='none'
-          viewBox='0 0 20 12'
-          className='absolute right-3 top-2 h-5 w-5 cursor-pointer'
-          onClick={toggleEye}
-        >
+        <svg fill='none' viewBox='0 0 20 12' className={classNameIcon} onClick={toggleEye}>
           <path
             stroke='none'
             fill='#000'

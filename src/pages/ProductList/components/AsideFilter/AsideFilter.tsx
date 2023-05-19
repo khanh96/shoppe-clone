@@ -14,6 +14,7 @@ import { NoUndefinedField } from 'src/types/utils.type'
 import RatingStars from '../RatingStars'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
 import InputV2 from 'src/components/InputV2'
+import { useTranslation } from 'react-i18next'
 
 interface AsideFilterProps {
   categories: Category[]
@@ -23,6 +24,7 @@ interface AsideFilterProps {
 type FormData = NoUndefinedField<PriceRangeSchemaType>
 
 export default function AsideFilter({ categories, queryConfig }: AsideFilterProps) {
+  const { t } = useTranslation(['home'])
   const {
     control,
     handleSubmit,
@@ -86,7 +88,7 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
             </g>
           </g>
         </svg>
-        Tất cả danh mục
+        {t('home:all_category')}
       </Link>
       <div className='my-4 h-[1px] bg-gray-300'></div>
       <ul>

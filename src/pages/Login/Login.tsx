@@ -74,13 +74,16 @@ export default function Login() {
                 errorMessage={errors.email?.message}
               />
               <Input
-                classNameWrap='mt-3'
+                classNameWrap='mt-3 relative'
                 type='password'
                 placeholder='Password'
                 register={register}
                 name='password'
                 // rules={rules.password}
                 errorMessage={errors.password?.message}
+                showIconEye={false}
+                classNameInput='w-full rounded-sm border border-gray-300 py-3 pl-3 pr-10  outline-none focus:border-gray-500 focus:shadow-sm'
+                classNameIcon='absolute h-5 w-5 cursor-pointer top-3 right-3'
               />
               <div className='mt-3'>
                 <Button

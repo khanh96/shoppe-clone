@@ -82,9 +82,10 @@ export default function Register() {
                 placeholder='Password'
                 register={register}
                 name='password'
+                classNameInput='w-full rounded-sm border border-gray-300 py-3 pl-3 pr-10  outline-none focus:border-gray-500 focus:shadow-sm'
+                classNameIcon='absolute h-5 w-5 cursor-pointer top-3 right-3'
                 // rules={rules.password}
                 errorMessage={errors.password?.message}
-                showIconEye={false}
               />
               <Input
                 classNameWrap='mt-3 relative'
@@ -92,9 +93,10 @@ export default function Register() {
                 placeholder='Confirm password'
                 register={register}
                 name='confirm_password'
+                classNameInput='w-full rounded-sm border border-gray-300 py-3 pl-3 pr-10  outline-none focus:border-gray-500 focus:shadow-sm'
+                classNameIcon='absolute h-5 w-5 cursor-pointer top-3 right-3'
                 // rules={rules.confirm_password}
                 errorMessage={errors.confirm_password?.message}
-                showIconEye={false}
               />
               <div className='mt-3'>
                 <Button
