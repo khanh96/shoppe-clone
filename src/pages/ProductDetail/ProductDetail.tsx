@@ -13,6 +13,8 @@ import QuantityController from 'src/components/QuantityController'
 import { purchaseApi } from 'src/apis/purchase.api'
 import { purchasesStatus } from 'src/constants/purchase'
 import { path } from 'src/constants/path'
+import { Helmet } from 'react-helmet-async'
+import { convert } from 'html-to-text'
 
 export default function ProductDetail() {
   const queryClient = useQueryClient()
@@ -143,6 +145,15 @@ export default function ProductDetail() {
   if (!product) return null
   return (
     <div className='bg-gray-200 py-4'>
+      <Helmet>
+        <title>{product.name} | Shoppe clone</title>
+        <meta
+          name='description'
+          content={convert(product.description, {
+            wordwrap: 120
+          })}
+        />
+      </Helmet>
       <div className='container'>
         <div className='bg-white p-4 shadow'>
           <div className='grid grid-cols-12 gap-2 lg:gap-9'>
