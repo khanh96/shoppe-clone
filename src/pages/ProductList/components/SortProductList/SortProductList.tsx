@@ -6,6 +6,7 @@ import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import omit from 'lodash/omit'
 import { path } from 'src/constants/path'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
+import { useTranslation } from 'react-i18next'
 
 interface SortProductListProp {
   queryConfig: QueryConfig
@@ -13,6 +14,7 @@ interface SortProductListProp {
 }
 
 export default function SortProductList({ queryConfig, pageSize }: SortProductListProp) {
+  const { t } = useTranslation(['home', 'product'])
   const { sort_by = sortBy.view, order = orderConst.asc } = queryConfig
   const page = Number(queryConfig.page)
 
@@ -53,7 +55,7 @@ export default function SortProductList({ queryConfig, pageSize }: SortProductLi
     <div className='bg-gray-300/40 px-3 py-4'>
       <div className='flex flex-wrap items-center justify-between gap-2'>
         <div className='flex flex-wrap items-center gap-2'>
-          <div>Sắp xếp thêm</div>
+          <div>{t('home:sort_more')}</div>
           <button
             onClick={() => handSort(sortBy.view)}
             className={classNames('h-8 px-4 text-center', {
@@ -61,7 +63,7 @@ export default function SortProductList({ queryConfig, pageSize }: SortProductLi
               'bg-white text-black hover:bg-slate-100': !isActiveSortBy(sortBy.view)
             })}
           >
-            Phổ biến
+            {t('home:popular')}
           </button>
           <button
             onClick={() => handSort(sortBy.createdAt)}
@@ -70,7 +72,7 @@ export default function SortProductList({ queryConfig, pageSize }: SortProductLi
               'bg-white text-black hover:bg-slate-100': !isActiveSortBy(sortBy.createdAt)
             })}
           >
-            Mới nhất
+            {t('home:newest')}
           </button>
           <button
             onClick={() => handSort(sortBy.sold)}
@@ -79,7 +81,7 @@ export default function SortProductList({ queryConfig, pageSize }: SortProductLi
               'bg-white text-black hover:bg-slate-100': !isActiveSortBy(sortBy.sold)
             })}
           >
-            Bán chạy
+            {t('home:best_selling')}
           </button>
           <select
             className={classNames('h-8 px-4 text-left text-sm outline-none', {
@@ -90,13 +92,13 @@ export default function SortProductList({ queryConfig, pageSize }: SortProductLi
             onChange={(event) => handlePriceOrder(event.target.value as Exclude<ProductListConfig['order'], undefined>)}
           >
             <option value='' disabled>
-              Giá
+              {t('home:price')}
             </option>
             <option className='bg-white text-black' value={orderConst.asc}>
-              Giá: Thấp đến cao
+              {t('home:low_to_high_price')}
             </option>
             <option className='bg-white text-black' value={orderConst.desc}>
-              Giá: Cao đến thấp
+              {t('home:high_to_low_price')}
             </option>
           </select>
         </div>

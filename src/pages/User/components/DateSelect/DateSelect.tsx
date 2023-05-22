@@ -1,6 +1,7 @@
 import rangeRight from 'lodash/rangeRight'
 import range from 'lodash/range'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface DateSelectProps {
   errorMessage?: string
@@ -9,6 +10,7 @@ interface DateSelectProps {
 }
 
 export default function DateSelect({ errorMessage, value, onChange }: DateSelectProps) {
+  const { t } = useTranslation(['profile'])
   const [date, setDate] = useState({
     date: value?.getDate() || 1,
     month: value?.getMonth() || 0,
@@ -37,7 +39,7 @@ export default function DateSelect({ errorMessage, value, onChange }: DateSelect
   }
   return (
     <div className='mt-2 flex flex-col flex-wrap sm:flex-row'>
-      <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>Ngày sinh</div>
+      <div className='truncate pt-3 capitalize sm:w-[20%] sm:text-right'>{t('profile:birthday')}</div>
       <div className='mt-2 sm:mt-0 sm:w-[80%] sm:pl-5'>
         <div className='flex justify-between'>
           <select

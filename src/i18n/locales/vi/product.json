@@ -1,3 +1,10 @@
 {
-  "product_description": "Mô tả sản phẩm"
+  "product_description": "Product Description",
+  "sold": "Đã bán",
+  "product_available": "sản phẩm có sẵn",
+  "decrease": "Giảm",
+  "increase": "Tăng",
+  "quantity": "Số lượng",
+  "add_to_cart": "Thêm vào giỏ hàng",
+  "buy_now": "Mua ngay"
 }

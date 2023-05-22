@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import classNames from 'classnames'
-import React from 'react'
+import React, { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, createSearchParams } from 'react-router-dom'
 import { purchaseApi } from 'src/apis/purchase.api'
 import { path } from 'src/constants/path'
@@ -9,16 +10,22 @@ import useQueryParams from 'src/hooks/useQueryParams'
 import { PurchaseListStatus } from 'src/types/purchase.type'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 
-const purchaseTabs = [
-  { status: purchasesStatus.all, name: 'Tất cả' },
-  { status: purchasesStatus.waitForConfirmation, name: 'Chờ xác nhận' },
-  { status: purchasesStatus.waitForGetting, name: 'Chờ lấy hàng' },
-  { status: purchasesStatus.inProgress, name: 'Đang giao' },
-  { status: purchasesStatus.delivered, name: 'Đã giao' },
-  { status: purchasesStatus.cancelled, name: 'Đã hủy' }
-]
-
 export default function HistoryPurchase() {
+  const { t } = useTranslation(['profile'])
+  const purchaseTabs = useMemo(
+    () => [
+      {
+        status: purchasesStatus.all,
+        name: t('profile:all')
+      },
+      { status: purchasesStatus.waitForConfirmation, name: t('profile:wait_for_confirmation') },
+      { status: purchasesStatus.waitForGetting, name: t('profile:wait_for_getting') },
+      { status: purchasesStatus.inProgress, name: t('profile:in_progress') },
+      { status: purchasesStatus.delivered, name: t('profile:delivered') },
+      { status: purchasesStatus.cancelled, name: t('profile:cancelled') }
+    ],
+    [t]
+  )
   const queryParams: { status?: string } = useQueryParams()
   const status: number = Number(queryParams.status) || purchasesStatus.all
   const { data: purchasesInCartData, refetch: purchasesRefetch } = useQuery({
@@ -89,7 +96,7 @@ export default function HistoryPurchase() {
                       />
                     </svg>
                   </div>
-                  <span>Thành tiền</span>
+                  <span>{t('profile:into_money')}</span>
                   <span className='ml-4 text-xl text-orange'>
                     đ{formatCurrency(purchase.product.price * purchase.buy_count)}
                   </span>

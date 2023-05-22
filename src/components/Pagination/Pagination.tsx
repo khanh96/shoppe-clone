@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link, createSearchParams } from 'react-router-dom'
 import { path } from 'src/constants/path'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
@@ -30,6 +31,7 @@ Với range = 2 áp dụng cho khoảng cách đầu, cuối và xung quanh curr
 
 const RANGE = 2 // áp dụng cho khoảng cách đầu, cuối và xung quanh current_page
 export default function Pagination({ queryConfig, pageSize }: PaginationProp) {
+  const { t } = useTranslation(['home'])
   const page = Number(queryConfig.page)
 
   const handleSearchParams = (pageNumber: number) => {
@@ -99,7 +101,7 @@ export default function Pagination({ queryConfig, pageSize }: PaginationProp) {
   return (
     <div className='mt-6 flex flex-wrap justify-center'>
       {page === 1 ? (
-        <span className='mx-2 cursor-not-allowed rounded border bg-white/60 px-3 py-2 shadow-sm'>Prev</span>
+        <span className='mx-2 cursor-not-allowed rounded border bg-white/60 px-3 py-2 shadow-sm'>{t('home:prev')}</span>
       ) : (
         <Link
           to={{
@@ -108,12 +110,12 @@ export default function Pagination({ queryConfig, pageSize }: PaginationProp) {
           }}
           className='mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm'
         >
-          Prev
+          {t('home:prev')}
         </Link>
       )}
       {renderPagination()}
       {page === pageSize ? (
-        <span className='mx-2 cursor-not-allowed rounded border bg-white/60 px-3 py-2 shadow-sm'>Next</span>
+        <span className='mx-2 cursor-not-allowed rounded border bg-white/60 px-3 py-2 shadow-sm'>{t('home:next')}</span>
       ) : (
         <Link
           to={{
@@ -122,7 +124,7 @@ export default function Pagination({ queryConfig, pageSize }: PaginationProp) {
           }}
           className='mx-2 cursor-pointer rounded border bg-white px-3 py-2 shadow-sm'
         >
-          Next
+          {t('home:next')}
         </Link>
       )}
     </div>

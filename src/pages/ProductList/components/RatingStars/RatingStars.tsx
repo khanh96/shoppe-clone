@@ -3,6 +3,7 @@ import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import { path } from 'src/constants/path'
 import classNames from 'classnames'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
+import { useTranslation } from 'react-i18next'
 
 /**
  * index 0: Có 5 cái màu vàng tương ứng từ indexStar 0 - 4 đều màu vang
@@ -18,6 +19,7 @@ interface RatingStarsProps {
 }
 
 export default function RatingStars({ queryConfig }: RatingStarsProps) {
+  const { t } = useTranslation(['home'])
   const navigate = useNavigate()
   const handleRatingStar = (ratingStar: number) => {
     navigate({
@@ -95,7 +97,7 @@ export default function RatingStars({ queryConfig }: RatingStarsProps) {
                       </svg>
                     )
                   })}
-                {index !== 0 && <span>Trở lên</span>}
+                {index !== 0 && <span>{t('home:above')}</span>}
               </div>
             </li>
           )

@@ -24,7 +24,7 @@ interface AsideFilterProps {
 type FormData = NoUndefinedField<PriceRangeSchemaType>
 
 export default function AsideFilter({ categories, queryConfig }: AsideFilterProps) {
-  const { t } = useTranslation(['home'])
+  const { t } = useTranslation(['home', 'product'])
   const {
     control,
     handleSubmit,
@@ -134,12 +134,12 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
             />
           </g>
         </svg>
-        Bộ lọc tìm kiếm
+        {t('home:search_filters')}
       </Link>
       <div className='my-4 h-[1px] bg-gray-300'></div>
 
       <div className='my-5'>
-        <div>Khoảng giá</div>
+        <div>{t('home:price_range')}</div>
         <form className='mt-2' onSubmit={onSubmit}>
           <div className='flex items-start'>
             {/* <Controller
@@ -164,7 +164,7 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
               control={control}
               name='price_min'
               type='number'
-              placeholder='đ TỪ'
+              placeholder={t('home:from_unit')}
               classNameInput='w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
               classNameError='hidden'
               onChange={() => {
@@ -178,7 +178,7 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
               render={({ field }) => (
                 <InputNumber
                   type='text'
-                  placeholder='đ Đến'
+                  placeholder={t('home:to_unit')}
                   classNameInput='w-full rounded-sm border border-gray-300 p-1 outline-none focus:border-gray-500 focus:shadow-sm'
                   onChange={(event) => {
                     field.onChange(event)
@@ -193,19 +193,19 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
           </div>
           <div className='my-1 min-h-[1.25rem] text-center text-sm text-red-600'>{errors.price_min?.message}</div>
           <Button className='w-full items-center justify-center bg-orange p-2 px-2 text-sm uppercase text-white hover:bg-orange/80'>
-            Áp dụng
+            {t('home:apply')}
           </Button>
         </form>
       </div>
       <div className='my-4 h-[1px] bg-gray-300'></div>
-      <div className='text-sm'>Đánh giá</div>
+      <div className='text-sm'>{t('home:evaluate')}</div>
       <RatingStars queryConfig={queryConfig} />
       <div className='my-4 h-[1px] bg-gray-300'></div>
       <Button
         onClick={handleRemoveAll}
         className='w-full items-center justify-center bg-orange p-2 px-2 text-sm uppercase text-white hover:bg-orange/80'
       >
-        Xóa tất cả
+        {t('home:delete_all')}
       </Button>
     </div>
   )

@@ -12,10 +12,12 @@ import { ErrorResponseApi } from 'src/types/utils.type'
 import { AppContext } from 'src/contexts/app.context'
 import Button from 'src/components/Button'
 import { path } from 'src/constants/path'
+import { useTranslation } from 'react-i18next'
 
 export type FormData = RegisterSchemaType
 
 export default function Register() {
+  const { t } = useTranslation(['home'])
   const {
     register,
     handleSubmit,
@@ -66,7 +68,7 @@ export default function Register() {
         <div className='lg:py32 grid grid-cols-1 py-12 lg:grid-cols-5 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
             <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit} noValidate>
-              <div className='text-left text-2xl'>Đăng ký</div>
+              <div className='text-left text-2xl'>{t('home:register')}</div>
               <Input
                 classNameWrap='mt-8'
                 type='email'
@@ -105,13 +107,13 @@ export default function Register() {
                   isLoading={registerAccountMutation.isLoading}
                   disabled={registerAccountMutation.isLoading}
                 >
-                  Đăng Ký
+                  {t('home:register')}
                 </Button>
               </div>
               <div className='mt-8 flex items-center justify-center text-sm'>
                 <span className='text-gray-400'>Bạn mới biết đến Shopee?</span>
                 <Link to={path.login} className='ml-1 text-red-400'>
-                  Đăng nhập
+                  {t('home:login')}
                 </Link>
               </div>
             </form>

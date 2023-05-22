@@ -3,6 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 import omit from 'lodash/omit'
 import React, { useContext } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from 'src/apis/auth.api'
 import Button from 'src/components/Button'
@@ -16,6 +17,7 @@ import { isAxiosUnprocessableEntityError } from 'src/utils/utils'
 export type FormData = LoginSchemaType
 
 export default function Login() {
+  const { t } = useTranslation(['home'])
   const {
     register,
     handleSubmit,
@@ -63,7 +65,7 @@ export default function Login() {
         <div className='lg:py32 grid grid-cols-1 py-12 lg:grid-cols-5 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
             <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit}>
-              <div className='text-left text-2xl'>Đăng nhập</div>
+              <div className='text-left text-2xl'>{t('home:login')}</div>
               <Input
                 classNameWrap='mt-8'
                 type='email'
@@ -92,13 +94,13 @@ export default function Login() {
                   isLoading={loginAccountMutation.isLoading}
                   disabled={loginAccountMutation.isLoading}
                 >
-                  Đăng nhập
+                  {t('home:login')}
                 </Button>
               </div>
               <div className='mt-8 flex items-center justify-center text-sm'>
                 <span className='text-gray-400'>Bạn mới biết đến Shopee?</span>
                 <Link to={path.register} className='ml-1 text-red-400'>
-                  Đăng ký
+                  {t('home:register')}
                 </Link>
               </div>
             </form>

@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
-import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { Helmet } from 'react-helmet-async'
+import { convert } from 'html-to-text'
+import { useTranslation } from 'react-i18next'
 import { productApi } from 'src/apis/product.api'
 import ProductRating from 'src/components/ProductRating'
 import { Product as ProductType, ProductListConfig } from 'src/types/product.type'
@@ -13,10 +16,9 @@ import QuantityController from 'src/components/QuantityController'
 import { purchaseApi } from 'src/apis/purchase.api'
 import { purchasesStatus } from 'src/constants/purchase'
 import { path } from 'src/constants/path'
-import { Helmet } from 'react-helmet-async'
-import { convert } from 'html-to-text'
 
 export default function ProductDetail() {
+  const { t } = useTranslation(['product', 'home'])
   const queryClient = useQueryClient()
   const [buyCount, setBuyCount] = useState<number>(1)
   const { nameId } = useParams()
@@ -139,14 +141,13 @@ export default function ProductDetail() {
       }
     })
   }
-  // if (!nameId?.includes('-id-')) {
-  //   return <Navigate to={path.notFound} />
-  // }
   if (!product) return null
   return (
     <div className='bg-gray-200 py-4'>
       <Helmet>
-        <title>{product.name} | Shoppe clone</title>
+        <title>
+          {product.name} | {t('home:shoppe_clone')}
+        </title>
         <meta
           name='description'
           content={convert(product.description, {
@@ -232,18 +233,18 @@ export default function ProductDetail() {
                 <div className='mx-4 h-4 w-[1px] bg-gray-300'></div>
                 <div>
                   <span>{formatNumberToSocialStyle(product.sold)}</span>
-                  <span className='ml-1 text-gray-500'>Đã bán</span>
+                  <span className='ml-1 text-gray-500'>{t('product:sold')}</span>
                 </div>
               </div>
               <div className='mt-8 flex flex-col items-center bg-gray-50 px-5 py-4 md:flex-row'>
                 <div className='text-gray-500 line-through'>{formatCurrency(product.price_before_discount)}</div>
                 <div className='ml-3 text-3xl font-medium text-orange'>₫{formatCurrency(product.price)}</div>
                 <div className='ml-4 rounded-sm bg-orange px-1 py-[2px] text-xs font-semibold uppercase text-white'>
-                  {rateSale(product.price_before_discount, product.price)} giảm
+                  {rateSale(product.price_before_discount, product.price)} {t('product:decrease')}
                 </div>
               </div>
               <div className='mt-8 flex items-center'>
-                <div className='capitalize text-gray-500'>Số lượng</div>
+                <div className='capitalize text-gray-500'>{t('product:quantity')}</div>
                 <QuantityController
                   onDecrease={handleBuyCount}
                   onIncrease={handleBuyCount}
@@ -251,7 +252,9 @@ export default function ProductDetail() {
                   value={buyCount}
                   max={product.quantity}
                 />
-                <div className='ml-6 text-sm text-gray-500'>{product.quantity} sản phẩm có sắn</div>
+                <div className='ml-6 text-sm text-gray-500'>
+                  {product.quantity} {t('product:product_available')}
+                </div>
               </div>
               <div className='mt-8 flex items-center'>
                 <button
@@ -281,20 +284,22 @@ export default function ProductDetail() {
                       <line fill='none' strokeLinecap='round' strokeMiterlimit={10} x1={9} x2={9} y1='8.5' y2='5.5' />
                     </g>
                   </svg>
-                  Thêm vào giỏ hàng
+                  {t('product:add_to_cart')}
                 </button>
                 <button
                   onClick={buyNow}
                   className='ml-4 flex h-12 min-w-[5rem] items-center justify-center border bg-orange px-5 capitalize text-white shadow-sm outline-none hover:bg-orange/90'
                 >
-                  Mua ngay
+                  {t('product:buy_now')}
                 </button>
               </div>
             </div>
           </div>
         </div>
         <div className='mt-8 bg-white p-4 shadow'>
-          <div className='rounded bg-gray-50 p-4 text-lg capitalize text-slate-700'>Mô tả sản phẩm</div>
+          <div className='rounded bg-gray-50 p-4 text-lg capitalize text-slate-700'>
+            {t('product:product_description')}
+          </div>
           <div className='mx-4 mb-4 mt-12 text-sm leading-loose'>
             <div
               dangerouslySetInnerHTML={{

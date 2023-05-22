@@ -11,9 +11,8 @@ import { useTranslation } from 'react-i18next'
 import { locales } from 'src/i18n/i18n'
 
 export default function NavHeader() {
-  const { i18n } = useTranslation()
+  const { i18n, t } = useTranslation(['home'])
   const currentLanguage = locales[i18n.language as keyof typeof locales]
-  console.log(currentLanguage)
   const { setIsAuthenticated, isAuthenticated, profile, setProfile } = useContext(AppContext)
   const queryClient = useQueryClient()
   const logoutMutation = useMutation({
@@ -85,19 +84,19 @@ export default function NavHeader() {
                 to={path.profile}
                 className='block w-full bg-white px-3 py-2 text-left hover:bg-slate-100 hover:text-cyan-500'
               >
-                Tài khoản của tôi
+                {t('home:my_account')}
               </Link>
               <Link
                 to={path.historyPurchase}
                 className='block w-full bg-white px-3 py-2 text-left hover:bg-slate-100 hover:text-cyan-500'
               >
-                Đơn Mua
+                {t('home:purchase_order')}
               </Link>
               <button
                 className='block w-full bg-white px-3 py-2 text-left hover:bg-slate-100 hover:text-cyan-500'
                 onClick={handleLogout}
               >
-                Đăng xuất
+                {t('home:logout')}
               </button>
             </div>
           }
@@ -115,11 +114,11 @@ export default function NavHeader() {
       {!isAuthenticated && (
         <div className='flex items-center'>
           <Link to={path.register} className='mx-3 capitalize hover:text-white/70'>
-            Đăng ký
+            {t('home:register')}
           </Link>
           <div className='h-4 border-r-[1px] border-r-white/40' />
           <Link to={path.login} className='mx-3 capitalize hover:text-white/70'>
-            Đăng Nhập
+            {t('home:login')}
           </Link>
         </div>
       )}
