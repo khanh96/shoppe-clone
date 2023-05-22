@@ -14,6 +14,7 @@ import { Purchase } from 'src/types/purchase.type'
 import { formatCurrency, generateNameId } from 'src/utils/utils'
 import noProduct from 'src/assets/images/no-product.png'
 import { useTranslation } from 'react-i18next'
+import HelmetSeo from 'src/components/Helmet'
 
 interface StateLocation {
   purchaseId: string | null
@@ -165,6 +166,7 @@ export default function Cart(): JSX.Element {
 
   return (
     <div className='bg-neutral-100 py-16'>
+      <HelmetSeo title='Shoppe Cart | Shoppe clone' description='Giỏ hàng' />
       <div className='container'>
         {extendedPurchases.length > 0 ? (
           <>

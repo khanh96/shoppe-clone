@@ -8,6 +8,7 @@ import { ProductListConfig } from 'src/types/product.type'
 import { getCategories } from 'src/apis/category.api'
 import useQueryConfig from 'src/hooks/useQueryConfig'
 import { Helmet } from 'react-helmet-async'
+import HelmetSeo from 'src/components/Helmet'
 
 export default function ProductList() {
   const queryConfig = useQueryConfig()
@@ -23,10 +24,7 @@ export default function ProductList() {
   })
   return (
     <div className='bg-gray-200 py-6'>
-      <Helmet>
-        <title>Product list</title>
-        <meta name='description' content='List product' />
-      </Helmet>
+      <HelmetSeo title='Product List | Shoppe Clone' description='Danh sách sản phẩm' />
       <div className='container'>
         <div className='grid grid-cols-12 gap-6'>
           <div className='col-span-3'>

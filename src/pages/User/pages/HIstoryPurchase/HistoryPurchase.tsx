@@ -4,6 +4,7 @@ import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, createSearchParams } from 'react-router-dom'
 import { purchaseApi } from 'src/apis/purchase.api'
+import HelmetSeo from 'src/components/Helmet'
 import { path } from 'src/constants/path'
 import { purchasesStatus } from 'src/constants/purchase'
 import useQueryParams from 'src/hooks/useQueryParams'
@@ -54,6 +55,7 @@ export default function HistoryPurchase() {
   ))
   return (
     <div>
+      <HelmetSeo title='History Purchase | Shoppe Clone' description='lịch sử đơn mua' />
       <div className='overflow-x-auto'>
         <div className='min-w-[700px]'>
           <div className='sticky top-0 flex rounded-t-sm shadow-sm'>{purchasesTabsLink}</div>

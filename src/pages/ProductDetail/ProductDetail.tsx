@@ -3,7 +3,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useNavigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { Helmet } from 'react-helmet-async'
 import { convert } from 'html-to-text'
 import { useTranslation } from 'react-i18next'
 import { productApi } from 'src/apis/product.api'
@@ -16,6 +15,7 @@ import QuantityController from 'src/components/QuantityController'
 import { purchaseApi } from 'src/apis/purchase.api'
 import { purchasesStatus } from 'src/constants/purchase'
 import { path } from 'src/constants/path'
+import HelmetSeo from 'src/components/Helmet'
 
 export default function ProductDetail() {
   const { t } = useTranslation(['product', 'home'])
@@ -144,17 +144,14 @@ export default function ProductDetail() {
   if (!product) return null
   return (
     <div className='bg-gray-200 py-4'>
-      <Helmet>
-        <title>
-          {product.name} | {t('home:shoppe_clone')}
-        </title>
-        <meta
-          name='description'
-          content={convert(product.description, {
-            wordwrap: 120
-          })}
-        />
-      </Helmet>
+      <HelmetSeo
+        title={`${product.name} | Shoppe clone<`}
+        description={convert(product.description, {
+          limits: {
+            maxInputLength: 120
+          }
+        })}
+      />
       <div className='container'>
         <div className='bg-white p-4 shadow'>
           <div className='grid grid-cols-12 gap-2 lg:gap-9'>

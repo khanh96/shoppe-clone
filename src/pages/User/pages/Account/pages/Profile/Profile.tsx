@@ -3,6 +3,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { Controller, FormProvider, useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
+import { Helmet } from 'react-helmet-async'
 import userApi from 'src/apis/user.api'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
@@ -15,6 +16,7 @@ import { UserSchemaType, profileSchema } from 'src/utils/rules'
 import { getAvatarUrl, isAxiosUnprocessableEntityError } from 'src/utils/utils'
 import Info from './Info'
 import { useTranslation } from 'react-i18next'
+import HelmetSeo from 'src/components/Helmet'
 
 export type FormData = Pick<UserSchemaType, 'name' | 'phone' | 'address' | 'date_of_birth' | 'avatar'>
 type FormDataError = Omit<FormData, 'date_of_birth'> & {
@@ -114,6 +116,7 @@ export default function Profile() {
 
   return (
     <div className='rounded-sm bg-white px-4 pb-10 shadow md:px-7 md:pb-20'>
+      <HelmetSeo title='Profile | Shoppe clone' description='Thông tin tài khoản' />
       <div className='border-b border-b-gray-200 py-6'>
         <h1 className='text-lg font-medium capitalize text-gray-900'>{t('profile:my_profile')}</h1>
         <div className='mt-1 text-sm text-gray-700'>{t('profile:manage_profile_information_for_account_security')}</div>
