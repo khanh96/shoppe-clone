@@ -16,7 +16,7 @@ import { isAxiosExpiredTokenError, isAxiosUnauthorizedError, redirectToPageNotFo
 import { URL_LOGIN, URL_LOGOUT, URL_REFRESH_ACCESS_TOKEN, URL_REGISTER } from 'src/apis/auth.api'
 import { ErrorResponseApi } from 'src/types/utils.type'
 
-class Http {
+export class Http {
   instance: AxiosInstance
   private accessToken: string
   private refreshToken: string

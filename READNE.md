@@ -717,3 +717,21 @@ useEffect(() => {
 
 - Dùng **lazy load** để đến đâu tải đến đấy cos nghĩa là vào trang nào thì tải trang ý. Không cần phải tải hết khi vô web.
 - Import cụ thể thư viện lodash như **import omitBy from 'lodash/omitBy'** để tránh file build lớn.
+
+### Unit test
+
+- Automation test
+
+* selenium [https://www.selenium.dev/]
+* puppeteer [https://pptr.dev/]
+* playwright [https://playwright.dev/]
+
+- mocking: Cho phép thay đổi các môi trường test
+
+* jsDom là chưa các API JavaScript của các tiêu chuẩn web khác nhau (browser), để sử dụng với Node.js. (localstorage lấy từ jsdom)
+
+- setup and teardown: Các function gọi trước hoặc sau khi 1 test case thực hiện (it)
+
+* beforeEach
+* afterEach
+* beforeAll
