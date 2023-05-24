@@ -1,7 +1,6 @@
-import { describe, expect, it } from 'vitest'
+import { describe, beforeEach, it, expect } from 'vitest'
 import { Http } from '../http'
 import HttpStatusCode from 'src/constants/httpStatusCode.enum'
-import { beforeEach } from 'node:test'
 import { setAccessTokenToLS, setRefreshTokenToLS } from '../auth'
 
 describe('http axios', () => {
