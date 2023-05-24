@@ -735,3 +735,40 @@ useEffect(() => {
 * beforeEach
 * afterEach
 * beforeAll
+
+- Coverage để biết khi test nó sẽ chạm đến những phần nào trong code. [https://vitest.dev/guide/coverage.html]
+
+* coverage sẽ hiển thị 2 bảng dựa trên thư viện **istanbul** or **c8**
+* stmts: Statement testing => Tỉ lệ phầm trong dòng lệnh coverage
+* Branch: Số nhánh code là các condition để rẽ nhánh của code
+
+```jsx
+// if đây là 1 nhánh
+if (a === true) {
+  return true
+  //  else đây là 1 nhánh
+} else {
+  return false
+}
+// => có 2 nhánh
+```
+
+- Lines :
+
+* Những phần màu đỏ là test chưa coverage được
+
+- Cài thêm @testing-library/react, @testing-library/user-event, @testing-library/jest-dom để test react-router
+
+- import sử dụng với vitest
+
+```jsx
+import matchers from '@testing-library/jest-dom/matchers'
+expect.extend(matchers)
+```
+
+Chú ý:
+Phải có expect trong unit test thì mới log ra đc kết quả.
+Lỗi: **Timed out in waitFor.**
+
+- Test render page (page đúng or page not found)
+- Test navigate page

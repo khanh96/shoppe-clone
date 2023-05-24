@@ -24,7 +24,7 @@ export default function ProductList() {
   })
   return (
     <div className='bg-gray-200 py-6'>
-      <HelmetSeo title='Product List | Shoppe Clone' description='Danh sách sản phẩm' />
+      <HelmetSeo title='Homepage | Shoppe Clone' description='Danh sách sản phẩm' />
       <div className='container'>
         <div className='grid grid-cols-12 gap-6'>
           <div className='col-span-3'>

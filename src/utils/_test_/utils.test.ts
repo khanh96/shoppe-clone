@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isAxiosError, isAxiosUnprocessableEntityError } from '../utils'
+import { formatCurrency, isAxiosError, isAxiosUnprocessableEntityError } from '../utils'
 import { AxiosError } from 'axios'
 import HttpStatusCode from 'src/constants/httpStatusCode.enum'
 
@@ -32,5 +32,13 @@ describe('isAxiosUnprocessableEntityError', () => {
         } as any)
       )
     ).toBe(true)
+  })
+})
+describe('formatCurrency', () => {
+  const currencyNumber = 1000000
+  const currencyString = 'dadada'
+  it('formatCurrency đầu ra phải trả về số dạng tiền tệ', () => {
+    expect(formatCurrency(currencyNumber)).toBe(Intl.NumberFormat('en-DE').format(currencyNumber))
+    expect(formatCurrency(currencyString as any)).toBe('NaN')
   })
 })

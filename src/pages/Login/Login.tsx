@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { login } from 'src/apis/auth.api'
 import Button from 'src/components/Button'
+import HelmetSeo from 'src/components/Helmet'
 import Input from 'src/components/Input'
 import { path } from 'src/constants/path'
 import { AppContext } from 'src/contexts/app.context'
@@ -61,6 +62,7 @@ export default function Login() {
 
   return (
     <div className='bg-orange'>
+      <HelmetSeo title='Login | Shoppe Clone' description='Đăng nhập tài khoản' />
       <div className='container'>
         <div className='lg:py32 grid grid-cols-1 py-12 lg:grid-cols-5 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>

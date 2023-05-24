@@ -121,7 +121,7 @@ export default function useRouterElement() {
       )
     },
     {
-      path: path.notFound,
+      path: '*',
       element: (
         <MainLayout>
           <NotFound />

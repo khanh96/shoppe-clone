@@ -111,7 +111,7 @@ export default function Register() {
                 </Button>
               </div>
               <div className='mt-8 flex items-center justify-center text-sm'>
-                <span className='text-gray-400'>Bạn mới biết đến Shopee?</span>
+                <span className='text-gray-400'>Bạn đã có tài khoản Shopee?</span>
                 <Link to={path.login} className='ml-1 text-red-400'>
                   {t('home:login')}
                 </Link>

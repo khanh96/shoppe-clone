@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import {
   getAccessTokenFromLS,
   getProfileFromLS,
@@ -7,7 +7,6 @@ import {
   setProfileToLS,
   setRefreshTokenToLS
 } from '../auth'
-import { before } from 'lodash'
 
 const refresh_token =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NTQ4MDI2NmQ3YzYyMDM0MDg1YzFhMiIsImVtYWlsIjoidXNlci0wMkBnbWFpbC5jb20iLCJyb2xlcyI6WyJVc2VyIl0sImNyZWF0ZWRfYXQiOiIyMDIzLTA1LTIzVDA3OjQ2OjE0LjUwM1oiLCJpYXQiOjE2ODQ4Mjc5NzQsImV4cCI6MTY4NDkxNDM3NH0.wdEdcU4tO_QuzLcp4wlVHXGSB8omKb1GGLldpHrJW7Y'
