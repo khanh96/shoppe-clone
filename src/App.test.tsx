@@ -26,7 +26,7 @@ describe('APP', () => {
       expect(document.querySelector('title')?.textContent).toBe('Homepage | Shoppe Clone')
     })
     // xác minh nội dung trang cho tuyến đường dự kiến sau khi điều hướng
-    await user.click(screen.getByText(/login/i))
+    user.click(screen.getByText(/login/i))
     // Verify chuyển sang trang login
     await waitFor(() => {
       // Tìm text có trong trang web k?

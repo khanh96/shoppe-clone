@@ -23,7 +23,8 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
-    setError
+    setError,
+    watch
   } = useForm<FormData>({
     resolver: yupResolver(loginSchema)
   })
@@ -34,6 +35,9 @@ export default function Login() {
       return login(body)
     }
   })
+  const formState = watch()
+  console.log(errors)
+  console.log(formState)
   // const rules = getRules(getValues) validate k dùng yup
   const onSubmit = handleSubmit((data) => {
     const body = data
@@ -66,7 +70,7 @@ export default function Login() {
       <div className='container'>
         <div className='lg:py32 grid grid-cols-1 py-12 lg:grid-cols-5 lg:pr-10'>
           <div className='lg:col-span-2 lg:col-start-4'>
-            <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit}>
+            <form className='rounded bg-white p-10 shadow-sm' onSubmit={onSubmit} noValidate>
               <div className='text-left text-2xl'>{t('home:login')}</div>
               <Input
                 classNameWrap='mt-8'
@@ -76,6 +80,7 @@ export default function Login() {
                 name='email'
                 // rules={rules.email} validate k dùng yup
                 errorMessage={errors.email?.message}
+                aria-label='email'
               />
               <Input
                 classNameWrap='mt-3 relative'
@@ -83,6 +88,7 @@ export default function Login() {
                 placeholder='Password'
                 register={register}
                 name='password'
+                aria-label='password'
                 // rules={rules.password}
                 errorMessage={errors.password?.message}
                 showIconEye={false}

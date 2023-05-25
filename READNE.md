@@ -759,16 +759,26 @@ if (a === true) {
 
 - Cài thêm @testing-library/react, @testing-library/user-event, @testing-library/jest-dom để test react-router
 
-- import sử dụng với vitest
+- import **matchers** để sử dụng với vitest để sử dụng **toBeInTheDocument**
 
 ```jsx
 import matchers from '@testing-library/jest-dom/matchers'
 expect.extend(matchers)
 ```
 
+-
+
 Chú ý:
-Phải có expect trong unit test thì mới log ra đc kết quả.
-Lỗi: **Timed out in waitFor.**
+
+- Phải có expect trong unit test thì mới log ra đc kết quả.
+- Lỗi: **Timed out in waitFor.**
+- Nên dùng **query** hơn là **find** or **get**
+
+```jsx
+console.log(await screen.findByText('Trường Email phải bắt buộc')) // => throw ra lỗi vì nó return về Promise nếu không tìm ra
+console.log(screen.queryByText('Trường Email phải bắt buộc')) // => throw ra null nếu không tìm thẩy ra.
+```
 
 - Test render page (page đúng or page not found)
 - Test navigate page
+- Test react hook form

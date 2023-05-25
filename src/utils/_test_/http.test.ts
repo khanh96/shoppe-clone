@@ -3,6 +3,12 @@ import { Http } from '../http'
 import HttpStatusCode from 'src/constants/httpStatusCode.enum'
 import { setAccessTokenToLS, setRefreshTokenToLS } from '../auth'
 
+/**
+ * Nên có 1 cái account test và 1 server test
+ *
+ */
+//
+
 describe('http axios', () => {
   let http = new Http().instance
   beforeEach(() => {
