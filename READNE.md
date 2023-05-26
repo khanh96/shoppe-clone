@@ -782,3 +782,17 @@ console.log(screen.queryByText('Trường Email phải bắt buộc')) // => thr
 - Test render page (page đúng or page not found)
 - Test navigate page
 - Test react hook form
+
+## Mock service workder
+
+- Cài đặt msw
+
+* Tạo file vitest.setup.js ngang hàng với vite.config.ts
+* Thêm config vào vite.config.ts
+
+- Nên sử dụng để mock api vào để thực hiện unit test
+- Không tác động vào api thật
+- vitest.setup.js sẽ chạy trước các file test.
+
+=> Unit test chỉ test đơn vị nhỏ thôi vì viết rất tốn time.
+=> Nếu muốn test toàn app thì sẽ phải test kiểu end-to-end => Playwright

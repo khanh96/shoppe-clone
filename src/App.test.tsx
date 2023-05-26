@@ -7,8 +7,6 @@ import App from './App'
 import { logScreen, renderWithRouter } from './utils/utilsTest'
 import { path } from './constants/path'
 
-expect.extend(matchers)
-
 describe('APP', () => {
   test('Test render app and navigate page', async () => {
     render(<App />, { wrapper: BrowserRouter })
@@ -26,7 +24,7 @@ describe('APP', () => {
       expect(document.querySelector('title')?.textContent).toBe('Homepage | Shoppe Clone')
     })
     // xác minh nội dung trang cho tuyến đường dự kiến sau khi điều hướng
-    user.click(screen.getByText(/login/i))
+    await user.click(screen.getByText(/login/i))
     // Verify chuyển sang trang login
     await waitFor(() => {
       // Tìm text có trong trang web k?

@@ -63,7 +63,7 @@ describe('Login', () => {
     })
   })
 
-  test('Không hiển thị lỗi khi nhập value đúng', async () => {
+  test('Không hiển thị lỗi và login thành cồng', async () => {
     fireEvent.input(screen.getByRole('textbox', { name: /email/i }), {
       target: {
         value: 'user-02@gmail.com'
@@ -74,11 +74,16 @@ describe('Login', () => {
         value: '123456'
       }
     })
-    waitFor(() => {
-      expect(screen.queryByText('Email không đúng định dạng')).toBeTruthy()
-      expect(screen.queryByText('Độ dài password từ 6 - 160 ký tự')).toBeTruthy()
+    await waitFor(() => {
+      expect(screen.queryByText('Email không đúng định dạng')).toBeFalsy()
+      expect(screen.queryByText('Độ dài password từ 6 - 160 ký tự')).toBeFalsy()
     })
     fireEvent.submit(loginBtnElement)
+
+    await waitFor(() => {
+      expect(document.querySelector('title')?.textContent).toBe('Homepage | Shoppe Clone')
+    })
+
     await logScreen()
   })
 })

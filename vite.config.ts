@@ -20,6 +20,7 @@ export default defineConfig({
   },
   build: {},
   test: {
-    environment: 'jsdom' // default 'node'
+    environment: 'jsdom', // default 'node'
+    setupFiles: path.resolve(__dirname, './vitest.setup.js')
   }
 })
