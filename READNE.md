@@ -796,3 +796,8 @@ console.log(screen.queryByText('Trường Email phải bắt buộc')) // => thr
 
 => Unit test chỉ test đơn vị nhỏ thôi vì viết rất tốn time.
 => Nếu muốn test toàn app thì sẽ phải test kiểu end-to-end => Playwright
+
+### Storybook
+
+- Sinh ra để giải quyết vấn đề là để người mới vào không cần phải tìm compoent nữa.
+- Build UI theo Component-Driven Development (CDD) methodology. Là build từ dưới lên để trở thành 1 page.

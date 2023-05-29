@@ -24,6 +24,7 @@ interface AsideFilterProps {
 type FormData = NoUndefinedField<PriceRangeSchemaType>
 
 export default function AsideFilter({ categories, queryConfig }: AsideFilterProps) {
+  console.log('CATEGORY======>', categories)
   const { t } = useTranslation(['home', 'product'])
   const {
     control,
@@ -92,29 +93,30 @@ export default function AsideFilter({ categories, queryConfig }: AsideFilterProp
       </Link>
       <div className='my-4 h-[1px] bg-gray-300'></div>
       <ul>
-        {categories.map((categoryItem) => {
-          const isActiveCategory = categoryItem._id === queryConfig.category
-          return (
-            <li className='py-2 pl-2' key={categoryItem._id}>
-              <Link
-                to={{
-                  pathname: path.home,
-                  search: handleSearchCategory(categoryItem._id)
-                }}
-                className={classNames('relative px-2', {
-                  'font-semibold text-orange': isActiveCategory
-                })}
-              >
-                {isActiveCategory && (
-                  <svg viewBox='0 0 4 7' className='absolute left-[-10px] top-1 h-2 w-2 fill-orange'>
-                    <polygon points='4 3.5 0 0 0 7' />
-                  </svg>
-                )}
-                {categoryItem.name}
-              </Link>
-            </li>
-          )
-        })}
+        {categories.length > 0 &&
+          categories.map((categoryItem) => {
+            const isActiveCategory = categoryItem._id === queryConfig.category
+            return (
+              <li className='py-2 pl-2' key={categoryItem._id}>
+                <Link
+                  to={{
+                    pathname: path.home,
+                    search: handleSearchCategory(categoryItem._id)
+                  }}
+                  className={classNames('relative px-2', {
+                    'font-semibold text-orange': isActiveCategory
+                  })}
+                >
+                  {isActiveCategory && (
+                    <svg viewBox='0 0 4 7' className='absolute left-[-10px] top-1 h-2 w-2 fill-orange'>
+                      <polygon points='4 3.5 0 0 0 7' />
+                    </svg>
+                  )}
+                  {categoryItem.name}
+                </Link>
+              </li>
+            )
+          })}
       </ul>
       <Link to='/' className='mt-4 flex items-center font-bold uppercase'>
         <svg

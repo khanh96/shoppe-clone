@@ -9,7 +9,7 @@ import { path } from './constants/path'
 
 describe('APP', () => {
   test('Test render app and navigate page', async () => {
-    render(<App />, { wrapper: BrowserRouter })
+    // render(<App />, { wrapper: BrowserRouter })
     const { user } = renderWithRouter()
 
     /**
@@ -19,6 +19,7 @@ describe('APP', () => {
      * mặc định: timeout = 1000ms và interval = 50ms
      */
 
+    expect(document.body).toMatchSnapshot()
     // TEST: Verify vào đúng trang chủ
     await waitFor(() => {
       expect(document.querySelector('title')?.textContent).toBe('Homepage | Shoppe Clone')

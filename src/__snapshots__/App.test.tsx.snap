@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`APP > Test render app and navigate page 1`] = `
+<body>
+  <div>
+    <div
+      class="Toastify"
+    />
+  </div>
+</body>
+`;

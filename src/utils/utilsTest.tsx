@@ -62,6 +62,7 @@ const ProviderReactQuery = createWrapperReactQuery()
 export const renderWithRouter = ({ router = '/' } = {}) => {
   const user = userEvent.setup()
   window.history.pushState({}, 'Test page', router)
+  console.log('=======>', router)
   const defaultAppContext = getInitialAppContext()
   return {
     ...render(
