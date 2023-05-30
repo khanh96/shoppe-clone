@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import React from 'react'
+import React, { useState } from 'react'
 
 import Button from './Button'
 import { boolean } from 'yup'
@@ -16,21 +16,19 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const Login: Story = {
+export const Primary: Story = {
   args: {
     isLoading: false,
     children: 'Login',
     className: 'bg-red-500 px-2 py-4 text-center uppercase text-white hover:bg-red-600',
-    type: 'button'
+    disabled: false
   }
 }
 
 export const Register: Story = {
   args: {
-    isLoading: false,
+    ...Primary.args,
     children: 'Register',
-    className: 'w-full bg-red-500 px-2 py-4 text-center uppercase text-white hover:bg-red-600',
-    type: 'button',
-    disabled: true
+    className: 'w-full bg-red-500 px-2 py-4 text-center uppercase text-white hover:bg-red-600'
   }
 }
