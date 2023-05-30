@@ -43,7 +43,13 @@ const InputV2 = <
   }
   return (
     <div className={classNameWrap}>
-      <input {...field} {...rest} className={classNameInput} value={value || localValue} onChange={handleChange} />
+      <input
+        {...field}
+        {...rest}
+        className={classNameInput}
+        value={value === undefined ? localValue : value}
+        onChange={handleChange}
+      />
       <div className={classNameError}>{fieldState.error?.message}</div>
     </div>
   )

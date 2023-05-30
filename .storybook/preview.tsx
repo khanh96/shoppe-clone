@@ -8,6 +8,7 @@ import ErrorBoundary from '../src/components/ErrorBoundary/ErrorBoundary'
 import { HelmetProvider } from 'react-helmet-async'
 import { ToastContainer } from 'react-toastify'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { withRouter } from 'storybook-addon-react-router-v6'
 import '../src/index.css'
 const preview: Preview = {
   parameters: {
@@ -39,20 +40,19 @@ const queryClient = new QueryClient({
 const helmetContext = {}
 
 export const decorators = [
+  withRouter,
   (Story) => (
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
-        <AppContextProvider>
-          <ErrorBoundary>
-            <HelmetProvider context={helmetContext}>
-              <Story />
-              <ToastContainer />
-            </HelmetProvider>
-          </ErrorBoundary>
-        </AppContextProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <AppContextProvider>
+        <ErrorBoundary>
+          <HelmetProvider context={helmetContext}>
+            <Story />
+            <ToastContainer />
+          </HelmetProvider>
+        </ErrorBoundary>
+      </AppContextProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   )
 ]
 

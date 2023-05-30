@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import React, { useState } from 'react'
 
 import Button from './Button'
-import { boolean } from 'yup'
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Button> = {

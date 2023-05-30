@@ -567,6 +567,8 @@ useEffect(() => {
 
 - **NavLink** sử dụng isActive với cá router bình thường **http://abc/xyz**. Không sử dụng được với query params
 
+- Tối ưu:
+
 ### http & Axios
 
 - Tạo biến và lưu accessToken từ localStorage để lúc lấy accessToken sẽ lấy từ RAM nhanh hơn là lấy từ bộ nhớ (localStorage)
@@ -630,6 +632,27 @@ function handleName(): 'lucian' {
 function AppTest() {
   return <LearnGenTypePro person={{ getName: handleName }} lastName='lucian' />
 }
+```
+
+- Nếu muốn 2 thuộc tính phụ thuộc và nhau trong interface or type thì chỉ có dùng generic type
+
+* Tham khảo file:
+  - /Users/admin/Project/Example/shoppe-clone/src/pages/Login/Login.tsx
+  - /Users/admin/Project/Example/shoppe-clone/src/components/Input/Input.tsx
+
+```tsx
+function identity<Type>(value: Type): Type {
+  return value
+}
+
+// Với trường hợp truyền type thì chúng ta sẽ có sự chặt chẽ
+const a = identity<string>("I'm a string") // "a" sẽ là kiểu "string"
+
+// Không cần truyền type vẫn được, Cái generic type vẫn đóng
+// vai trò như là một cầu nối giữa các kiểu dữ liệu trong function
+// Chỉ là nó sẽ không như kỳ vọng khi chúng ta khai báo function thôi
+const val = 'Được'
+const b = identity(val) // "b" sẽ là kiểu "Được"
 ```
 
 ### SEO

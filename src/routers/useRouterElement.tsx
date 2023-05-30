@@ -53,27 +53,29 @@ export default function useRouterElement() {
         },
         {
           path: path.user,
-          element: (
-            <MainLayout>
-              <UserLayout />
-            </MainLayout>
-          ),
+          element: <MainLayout />,
           children: [
             {
-              path: path.historyPurchase,
-              element: <HistoryPurchase />
-            },
-            {
-              path: path.userAccount,
-              element: <Account />,
+              path: '',
+              element: <UserLayout />,
               children: [
                 {
-                  path: path.profile,
-                  element: <Profile />
+                  path: path.historyPurchase,
+                  element: <HistoryPurchase />
                 },
                 {
-                  path: path.changePassword,
-                  element: <ChangePassword />
+                  path: path.userAccount,
+                  element: <Account />,
+                  children: [
+                    {
+                      path: path.profile,
+                      element: <Profile />
+                    },
+                    {
+                      path: path.changePassword,
+                      element: <ChangePassword />
+                    }
+                  ]
                 }
               ]
             }
@@ -104,30 +106,49 @@ export default function useRouterElement() {
       ]
     },
     {
-      path: path.productDetail,
-      element: (
-        <MainLayout>
-          <ProductDetail />
-        </MainLayout>
-      )
-    },
-    {
       path: '',
-      index: true,
-      element: (
-        <MainLayout>
-          <ProductList />
-        </MainLayout>
-      )
-    },
-    {
-      path: '*',
-      element: (
-        <MainLayout>
-          <NotFound />
-        </MainLayout>
-      )
+      element: <MainLayout />,
+      children: [
+        {
+          path: path.productDetail,
+          element: <ProductDetail />
+        },
+        {
+          path: '/',
+          index: true,
+          element: <ProductList />
+        },
+        {
+          path: '*',
+          element: <NotFound />
+        }
+      ]
     }
+    // {
+    //   path: path.productDetail,
+    //   element: (
+    //     <MainLayout>
+    //       <ProductDetail />
+    //     </MainLayout>
+    //   )
+    // },
+    // {
+    //   path: '',
+    //   index: true,
+    //   element: (
+    //     <MainLayout>
+    //       <ProductList />
+    //     </MainLayout>
+    //   )
+    // },
+    // {
+    //   path: '*',
+    //   element: (
+    //     <MainLayout>
+    //       <NotFound />
+    //     </MainLayout>
+    //   )
+    // }
   ])
 
   return <Suspense>{routeElements}</Suspense>

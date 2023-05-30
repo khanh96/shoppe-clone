@@ -14,7 +14,16 @@ import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
 
 const helmetContext = {}
 
+/**
+ * Khi url thay đổi thì các component nào dùng các hook như
+ * useRoutes, useParmas, useSearchParams,...
+ * sẽ bị re-render.
+ * Ví dụ component `App` dưới đây bị re-render khi mà url thay đổi
+ * vì dùng `useRouteElements` (đây là customhook của `useRoutes`)
+ */
+
 function App() {
+  console.log('APP')
   const routeElements = useRouterElement()
   // const navigate = useNavigate()
   const { resetAuth } = useContext(AppContext)

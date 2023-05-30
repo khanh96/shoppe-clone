@@ -24,7 +24,6 @@ interface AsideFilterProps {
 type FormData = NoUndefinedField<PriceRangeSchemaType>
 
 export default function AsideFilter({ categories, queryConfig }: AsideFilterProps) {
-  console.log('CATEGORY======>', categories)
   const { t } = useTranslation(['home', 'product'])
   const {
     control,

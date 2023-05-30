@@ -36,8 +36,6 @@ export default function Login() {
     }
   })
   const formState = watch()
-  console.log(errors)
-  console.log(formState)
   // const rules = getRules(getValues) validate k dùng yup
   const onSubmit = handleSubmit((data) => {
     const body = data

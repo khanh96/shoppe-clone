@@ -1,35 +1,30 @@
 import type { Meta, StoryObj } from '@storybook/react'
-
-import MainLayout from './MainLayout'
-import ProductList from 'src/pages/ProductList'
+import Login from './Login'
 import { path } from 'src/constants/path'
+import RegisterLayout from 'src/layouts/RegisterLayout'
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof MainLayout> = {
-  title: 'Layout/MainLayout',
-  component: MainLayout,
+const meta: Meta<typeof Login> = {
+  title: 'Layout/MainLayout/Pages/Login',
+  component: Login,
   tags: ['autodocs'],
-  argTypes: {
-    children: {
-      description: 'Thành phần children trong layout'
-    }
-  }
-} satisfies Meta<typeof MainLayout>
+  argTypes: {}
+} satisfies Meta<typeof Login>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const MainLayoutPage: Story = {}
-
-export const HomePage: Story = {
-  args: {
-    children: <ProductList />
-  }
+export const LoginPage: Story = {
+  render: () => (
+    <RegisterLayout>
+      <Login />
+    </RegisterLayout>
+  )
 }
 
-HomePage.parameters = {
+LoginPage.parameters = {
   reactRouter: {
-    routePath: path.home
+    routePath: path.login
     //routeParams: { nameId: 'Điện-Thoại-Vsmart-Active-3-6GB64GB--Hàng-Chính-Hãng-id-60afb2c76ef5b902180aacba' }
     // routeHandle: 'Profile',
     // searchParams: { tab: 'activityLog' },

@@ -7910,7 +7910,7 @@ react-i18next@^12.3.1:
     "@babel/runtime" "^7.20.6"
     html-parse-stringify "^3.0.1"
 
-react-inspector@^6.0.0:
+react-inspector@^6.0.0, react-inspector@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/react-inspector/-/react-inspector-6.0.1.tgz#1a37f0165d9df81ee804d63259eaaeabe841287d"
   integrity sha512-cxKSeFTf7jpSSVddm66sKdolG90qURAX3g1roTeaN6x0YEbtWc8JpmFN9+yIqLNH2uEkYerWLtJZIXRIFuBKrg==
@@ -8557,6 +8557,13 @@ store2@^2.14.2:
   version "2.14.2"
   resolved "https://registry.yarnpkg.com/store2/-/store2-2.14.2.tgz#56138d200f9fe5f582ad63bc2704dbc0e4a45068"
   integrity sha512-siT1RiqlfQnGqgT/YzXVUNsom9S0H1OX+dpdGN1xkyYATo4I6sep5NmsRD/40s3IIOvlCq6akxkqG82urIZW1w==
+
+storybook-addon-react-router-v6@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/storybook-addon-react-router-v6/-/storybook-addon-react-router-v6-1.0.1.tgz#7c02f58e729c245334449648e370cb1513ddafd8"
+  integrity sha512-b6q7K9sFBn1WZF2nzMtEoZhOMaA16AckTpKYsoJ+T7HhofKJrar4S2yI8h2zudx30d7Oqfi6gD0anFOsPxU89w==
+  dependencies:
+    react-inspector "^6.0.1"
 
 storybook@^7.0.18:
   version "7.0.18"

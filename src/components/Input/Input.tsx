@@ -1,19 +1,20 @@
 import React, { useState } from 'react'
-import type { RegisterOptions, UseFormRegister } from 'react-hook-form'
+import type { FieldPath, FieldValues, RegisterOptions, UseFormRegister } from 'react-hook-form'
 
-interface InputTypeProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputTypeProps<TFieldValues extends FieldValues> extends React.InputHTMLAttributes<HTMLInputElement> {
   classNameWrap?: string
   classNameInput?: string
   classNameError?: string
   classNameIcon?: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  register?: UseFormRegister<any>
+  register?: UseFormRegister<TFieldValues>
   rules?: RegisterOptions
   errorMessage?: string
   showIconEye?: boolean
+  name: FieldPath<TFieldValues>
 }
 
-export default function Input({
+export default function Input<TFieldValues extends FieldValues>({
   classNameWrap,
   register,
   name,
@@ -25,7 +26,7 @@ export default function Input({
   classNameIcon = 'absolute right-3 top-2 h-5 w-5 cursor-pointer',
   showIconEye = true,
   ...rest
-}: InputTypeProps) {
+}: InputTypeProps<TFieldValues>) {
   const [openEye, setOpenEye] = useState(false)
   const registerResult = register && name ? { ...register(name, rules) } : {}
 
